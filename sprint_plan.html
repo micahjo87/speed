@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sprint — Daily Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#10141a; --bg2:#171d26; --bg3:#1f2732; --bg4:#27313d;
+    --line:#2a3441; --line2:#37434f;
+    --ink:#eaeef3; --ink2:#9aa6b4; --ink3:#606d7c;
+    --amber:#ffb020; --amber-dim:rgba(255,176,32,.14); --amber-line:rgba(255,176,32,.4);
+    --keep:#35d0a5; --keep-dim:rgba(53,208,165,.13);
+    --cut:#e5634d; --cut-dim:rgba(229,99,77,.12);
+    --disp:'Oswald',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'Space Mono',ui-monospace,monospace;
+    --maxw:660px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg); color:var(--ink); font-family:var(--body);
+    font-size:16px; line-height:1.5; padding-bottom:96px;
+    background-image:radial-gradient(circle at 50% -10%, #182230 0%, var(--bg) 55%);
+    min-height:100vh;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 16px}
+
+  .topbar{position:sticky; top:0; z-index:40; background:rgba(16,20,26,.86); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding-top:env(safe-area-inset-top);}
+  .topbar-in{display:flex; align-items:center; gap:12px; padding:12px 16px; max-width:var(--maxw); margin:0 auto}
+  .brand{font-family:var(--disp); font-weight:700; letter-spacing:.22em; font-size:15px}
+  .brand b{color:var(--amber)}
+  .brand .sub{display:block; font-family:var(--mono); font-size:9px; letter-spacing:.18em; color:var(--ink3); margin-top:1px}
+  .spacer{flex:1}
+  select.block{-webkit-appearance:none; appearance:none; background:var(--bg3); color:var(--ink); border:1px solid var(--line2); border-radius:9px; padding:8px 30px 8px 12px; font-family:var(--disp); font-weight:500; font-size:13px; letter-spacing:.04em; cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%239aa6b4' stroke-width='2'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center;}
+  .shortbtn{display:flex; align-items:center; gap:7px; background:var(--bg3); border:1px solid var(--line2); color:var(--ink2); border-radius:9px; padding:8px 12px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; transition:.15s;}
+  .shortbtn .dot{width:14px; height:14px; border-radius:4px; border:1.5px solid var(--ink3); flex:none; position:relative; transition:.15s}
+  .shortbtn.on{color:var(--keep); border-color:var(--keep)}
+  .shortbtn.on .dot{background:var(--keep); border-color:var(--keep)}
+  .shortbtn.on .dot::after{content:"✓"; position:absolute; inset:0; color:var(--bg); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; line-height:1}
+
+  .lanes{display:grid; grid-template-columns:repeat(7,1fr); gap:5px; padding:14px 0 10px}
+  .lane{background:var(--bg2); border:1px solid var(--line); border-radius:10px; padding:8px 2px 9px; text-align:center; cursor:pointer; transition:.15s; position:relative; overflow:hidden;}
+  .lane .num{font-family:var(--mono); font-size:9px; color:var(--ink3)}
+  .lane .dow{font-family:var(--disp); font-weight:600; font-size:15px; color:var(--ink2); margin-top:2px}
+  .lane .tag{font-size:8px; color:var(--ink3); font-weight:600; letter-spacing:.06em; text-transform:uppercase; margin-top:3px; min-height:10px}
+  .lane:hover{border-color:var(--line2)}
+  .lane.active{background:var(--amber-dim); border-color:var(--amber-line)}
+  .lane.active .dow,.lane.active .num{color:var(--amber)}
+  .lane.today::before{content:""; position:absolute; top:0; left:0; right:0; height:3px; background:var(--amber)}
+  .lane.rest .dow{color:var(--ink3)}
+
+  .day{animation:fade .3s ease}
+  @keyframes fade{from{opacity:0; transform:translateY(6px)}to{opacity:1; transform:none}}
+  .dayhead{padding:18px 0 6px}
+  .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--amber); text-transform:uppercase}
+  .daytitle{font-family:var(--disp); font-weight:600; font-size:27px; line-height:1.08; margin:6px 0 4px}
+  .dayfocus{color:var(--ink2); font-size:14px; max-width:52ch}
+  .meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:13px}
+  .chip{display:inline-flex; align-items:center; gap:6px; background:var(--bg2); border:1px solid var(--line); border-radius:20px; padding:5px 11px; font-size:12px; color:var(--ink2); font-weight:500}
+  .chip .k{font-family:var(--mono); font-size:11px; color:var(--ink3)}
+  .chip .v{font-family:var(--mono); color:var(--ink); font-weight:700}
+  .chip.short-hi{border-color:var(--keep); color:var(--keep)} .chip.short-hi .v{color:var(--keep)}
+  .cns{font-family:var(--disp); font-weight:600}
+  .cns.High{color:var(--amber)} .cns.Mod{color:#e0b45a} .cns.Low{color:var(--keep)}
+
+  .variant{display:flex; background:var(--bg2); border:1px solid var(--line); border-radius:11px; padding:4px; margin:16px 0 4px}
+  .variant button{flex:1; background:none; border:none; color:var(--ink2); font-family:var(--body); font-weight:600; font-size:13px; padding:9px 8px; border-radius:8px; cursor:pointer; transition:.15s}
+  .variant button.on{background:var(--bg4); color:var(--ink); box-shadow:0 1px 0 rgba(0,0,0,.3)}
+  .variant button.on.field{color:var(--amber)}
+  .vnote{font-size:13px; color:var(--ink2); background:var(--bg2); border:1px solid var(--line); border-left:3px solid var(--amber-line); border-radius:9px; padding:11px 13px; margin:12px 0}
+
+  .warm{margin:16px 0 8px; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--bg2)}
+  .warm summary{list-style:none; cursor:pointer; padding:13px 15px; display:flex; align-items:center; gap:10px}
+  .warm summary::-webkit-details-marker{display:none}
+  .warm .wlabel{font-family:var(--disp); font-weight:600; font-size:14px; letter-spacing:.05em; text-transform:uppercase}
+  .warm .wsub{font-size:11.5px; color:var(--ink3); font-family:var(--mono)}
+  .warm .caret{margin-left:auto; color:var(--ink3); transition:.2s; font-size:12px}
+  .warm[open] .caret{transform:rotate(180deg)}
+  .warm .wbody{padding:2px 15px 15px}
+  .wphase{margin-top:13px}
+  .wphase .ph{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); font-weight:700; display:block; margin-bottom:6px}
+  .wphase ul{list-style:none}
+  .wphase li{font-size:13.5px; color:var(--ink2); padding:3px 0 3px 15px; position:relative; line-height:1.45}
+  .wphase li::before{content:""; position:absolute; left:2px; top:12px; width:5px; height:5px; border-radius:50%; background:var(--line2)}
+  .wphase li b{color:var(--ink); font-weight:600}
+
+  .list{margin-top:6px}
+  .sechead{display:flex; align-items:center; gap:11px; margin:20px 0 4px; padding-top:4px}
+  .sechead .lbl{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--amber); white-space:nowrap; font-weight:700}
+  .sechead .rule{flex:1; height:1px; background:var(--line)}
+  .sechead:first-child{margin-top:8px}
+  .ex{display:grid; grid-template-columns:30px 1fr; gap:12px; padding:13px 2px; border-bottom:1px solid var(--line); align-items:start;}
+  .ex .idx{font-family:var(--mono); font-size:13px; color:var(--ink3); padding-top:2px; text-align:right}
+  .ex .name{font-family:var(--disp); font-weight:600; font-size:17px; line-height:1.15}
+  .ex .presc{display:flex; flex-wrap:wrap; gap:6px 10px; margin-top:6px; align-items:baseline}
+  .ex .sets{font-family:var(--mono); font-weight:700; font-size:14px; color:var(--ink); background:var(--bg3); border-radius:6px; padding:2px 8px}
+  .ex .rest{font-family:var(--mono); font-size:12px; color:var(--ink2)}
+  .ex .rest .rk{color:var(--ink3)}
+  .ex .note{font-size:12.5px; color:var(--ink2); margin-top:7px; line-height:1.45}
+  .ex .badge{display:inline-block; font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:2px 7px; border-radius:5px; margin-left:7px}
+  .badge.cut{color:var(--cut); background:var(--cut-dim)}
+  .ex .det{margin-top:8px}
+  .ex .det summary{list-style:none; cursor:pointer; font-size:11px; font-family:var(--mono); letter-spacing:.08em; color:var(--amber); text-transform:uppercase; display:inline-flex; align-items:center; gap:5px}
+  .ex .det summary::-webkit-details-marker{display:none}
+  .ex .det summary::before{content:"+"; font-weight:700}
+  .ex .det[open] summary::before{content:"–"}
+  .ex .det .dbody{font-size:12.5px; color:var(--ink2); margin-top:7px; line-height:1.55; padding:10px 12px; background:var(--bg2); border-radius:8px; border:1px solid var(--line)}
+  .ex .det .dbody b{color:var(--ink)}
+
+  body.short .ex.cut{opacity:.4}
+  body.short .ex.cut .name{text-decoration:line-through; text-decoration-color:var(--cut); text-decoration-thickness:1.5px}
+  body.short .ex.cut .presc,body.short .ex.cut .note,body.short .ex.cut .det{display:none}
+  body.short .ex.cut .name .badge{display:none}
+  body.short .ex.cut .name::after{content:"skip today"; font-family:var(--body); font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--cut); margin-left:9px; text-decoration:none; display:inline-block}
+  .shorttag{display:none}
+  body.short .shorttag{display:inline; font-family:var(--mono); font-size:11px; color:var(--keep)}
+
+  .restday{text-align:center; padding:60px 20px}
+  .restday .big{font-family:var(--disp); font-weight:700; font-size:40px; color:var(--ink3); letter-spacing:.08em}
+  .restday p{color:var(--ink2); margin-top:10px; max-width:34ch; margin-inline:auto; font-size:14px}
+  .legend{display:flex; gap:14px; flex-wrap:wrap; margin:10px 0 2px; font-size:11px; color:var(--ink3); font-family:var(--mono)}
+  .legend span{display:inline-flex; align-items:center; gap:5px}
+  .legend i{width:9px; height:9px; border-radius:3px; display:inline-block}
+
+  .bottombar{position:fixed; bottom:0; left:0; right:0; z-index:45; background:rgba(16,20,26,.92); backdrop-filter:blur(12px); border-top:1px solid var(--line); padding:10px 16px calc(10px + env(safe-area-inset-bottom));}
+  .bottombar-in{max-width:var(--maxw); margin:0 auto; display:flex; gap:10px}
+  .bbtn{flex:1; background:var(--bg3); border:1px solid var(--line2); color:var(--ink); border-radius:11px; padding:12px; font-weight:600; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px}
+  .bbtn:hover{border-color:var(--amber-line)}
+  .bbtn .ic{color:var(--amber); font-weight:700}
+  .drawer-scrim{position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:50; opacity:0; pointer-events:none; transition:.2s}
+  .drawer-scrim.open{opacity:1; pointer-events:auto}
+  .drawer{position:fixed; left:0; right:0; bottom:0; z-index:51; background:var(--bg2); border-top:1px solid var(--line2); border-radius:18px 18px 0 0; max-height:86vh; overflow-y:auto; transform:translateY(101%); transition:transform .28s cubic-bezier(.3,.9,.3,1); padding:0 0 calc(24px + env(safe-area-inset-bottom));}
+  .drawer.open{transform:none}
+  .drawer-in{max-width:var(--maxw); margin:0 auto; padding:0 18px}
+  .grab{width:38px; height:4px; background:var(--line2); border-radius:3px; margin:10px auto 4px}
+  .drawer h2{font-family:var(--disp); font-weight:600; font-size:22px; padding:10px 0 4px}
+  .drawer h3{font-family:var(--disp); font-weight:600; font-size:15px; letter-spacing:.05em; text-transform:uppercase; color:var(--amber); margin:22px 0 8px}
+  .drawer p{font-size:13.5px; color:var(--ink2); margin:7px 0; line-height:1.6}
+  .drawer p b{color:var(--ink)}
+  .drawer .close{position:sticky; top:0; float:right; background:var(--bg3); border:1px solid var(--line2); color:var(--ink2); border-radius:8px; width:32px; height:32px; font-size:16px; cursor:pointer; margin-top:6px}
+  .kv{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin:9px 0; font-size:13px; color:var(--ink2); line-height:1.6}
+  .kv b{color:var(--ink)}
+  .kv .h{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--amber); display:block; margin-bottom:5px}
+  .skiprow{display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start; padding:12px 0; border-bottom:1px solid var(--line)}
+  .skiprow:last-child{border:none}
+  .skiprow .lab{font-family:var(--disp); font-weight:600; font-size:13px; color:var(--amber); white-space:nowrap; padding-top:1px}
+  .skiprow .txt{font-size:13px; color:var(--ink2); line-height:1.5}
+  .skiprow .txt b{color:var(--ink)}
+  @media(min-width:520px){ .lane .tag{font-size:9px} .daytitle{font-size:31px} }
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <div class="brand">S<b>P</b>RINT<span class="sub">DAILY PLAN</span></div>
+  <div class="spacer"></div>
+  <select class="block" id="blockSel" aria-label="Training block">
+    <option value="b1">Block 1 · Foundation</option>
+    <option value="b2">Block 2 · Power + Max-V</option>
+    <option value="b3">Block 3 · Peaking</option>
+    <option value="mt">Maintenance</option>
+  </select>
+  <button class="shortbtn" id="shortBtn" aria-pressed="false"><span class="dot"></span><span id="shortLbl">Short on time</span></button>
+</div></div>
+
+<div class="wrap"><div class="lanes" id="lanes"></div><div id="dayRoot"></div></div>
+
+<div class="bottombar"><div class="bottombar-in">
+  <button class="bbtn" onclick="openDrawer('skip')"><span class="ic">↔</span> If I skip track / frisbee</button>
+  <button class="bbtn" onclick="openDrawer('ref')"><span class="ic">≡</span> Reference</button>
+</div></div>
+
+<div class="drawer-scrim" id="scrim" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer"><div class="drawer-in" id="drawerIn"></div></div>
+
+<script>
+/* ---------- detail text ---------- */
+const HSR = "<b>3s up / 3s down, no bounce.</b> You're past early rehab, so go heavy: 5–6RM × 4 sets, working toward 4–5 reps @ 85–90%. Or swap in 5×4 near-max isometric holds (3s each) for high tendon strain, zero impact. <b>Pain ≤3/10, settles within 24h</b>; morning stiffness must not trend worse. Never skip — tendons keep gains only while loaded.";
+const CONTRAST = "Load ~75–85% 1RM, 3 explosive reps → <b>rest 30s–2min</b> (not zero — lets fatigue fade so the jump is more explosive) → 3–5 max-quality plyo reps. 3–4 pairs. Land soft.";
+const ISO_DET = "<b>Overcoming</b> = you <b>push</b> maximally into something that can't move (pins, a fixed strap, or a loaded machine you deliberately can't budge), vs <b>yielding</b> = holding a heavy load in place. Overcoming builds tendon stiffness + fast force (what sprinting needs) and you control intensity by how hard you press — gentle on an irritated tendon. Maximal, quick intent. Pain ≤3/10, settles within 24h. Cranky-tendon day → swap to yielding holds: 3 × 30–45s at moderate load.";
+
+/* ---------- warm-ups ---------- */
+const WARM = {
+  sprint:{label:"Sprint / Power",sub:"~12–15 min · before any sprint, jump or heavy-lower day",phases:[
+    {phase:"Raise · 4 min",items:["Easy jog or bike — 3 min","Leg swings — 10/leg (front-back + side-to-side)","World's greatest stretch — 5/side","Ankle rocks to wall — 10/side (hold last 15s)"]},
+    {phase:"Activate · 4 min",items:["Glute bridge — ×15","Banded lateral walk — ×10 each way","Dead bug — ×6/side","Hip-flexor march ISO — ×5/leg (knee up, hold 3s)"]},
+    {phase:"Drills · 5 min",items:["A-skips — 2×20m","B-skips — 2×20m","Ankling — 2×20m","Straight-leg bounds — 1×20m","Build-ups — ×3 (40m, jog → 90%)"]},
+    {phase:"No room to run?",items:["Treadmill 60–90s ramp (walk → jog → run) instead of build-ups","Or: pogos ×20 + fast A-marches ×20s + 3 primer jumps"]}
+  ]},
+  lift:{label:"Lift",sub:"~6–8 min · before upper-body days",phases:[
+    {phase:"~6–8 min",items:["Bike or row — 3 min","Band pull-aparts — ×20","Band shoulder pass-throughs — ×10","Scap push-ups — ×10","2 ramp sets of your first lift (~40%, then ~60%)"]}
+  ]},
+  field:{label:"Before you play",sub:"hamstrings first — cutting cold is the #1 tweak",phases:[
+    {phase:"Hamstrings first",items:["Leg swings — 10/leg","World's greatest stretch — 5/side","Build-up runs — ×3 (jog → ~90%)"]}
+  ]}
+};
+
+/* ---------- exercise + group helpers ---------- */
+function X(n,p,rest,note,opt,short,d){return {n,p,rest,note:note||"",pri:opt?'opt':'core',short:short||null,d:d||null};}
+function G(sec,...items){return items.map(o=>Object.assign({sec},o));}
+
+/* reusable items */
+const CALF_STAND = ()=>X("Standing calf raise","3s up / 3s down","2 min","Knee straight — gastrocnemius. Full range off a step.",false,null,HSR);
+const CALF_SEAT  = ()=>X("Seated calf raise","3s up / 3s down","2 min","Knee bent — soleus. Full range.");
+const CALF_PRESS = ()=>X("Leg-press calf raise","3s up / 3s down","2 min","Heavy, full range, feet low on platform.",false,null,HSR);
+const HANGLEG    = (s)=>X("Hanging leg raise",s||"3 × 12","45s","Also trains the hip flexors. Resist the swing.");
+
+/* ---------- PROGRAM ---------- */
+const P = {
+ b1:{name:"Block 1 · Foundation & Tendon Restoration (Months 1–2)",days:{
+   mon:{tag:"Gym A",title:"Lower Strength + Accel",focus:"Heavy force, short accel, a light plyo primer, knee-drive power.",full:"80–90 min",short:"55 min",cns:"High",warm:"sprint",ex:[].concat(
+     G("Plyometrics",
+       X("Pogo hops","2 × 20","60s","Low, stiff-ankle. Reactive stiffness."),
+       X("Box jumps","3 × 4","90s","Step down, don't jump down — soft landings.")),
+     G("Acceleration",
+       X("Incline / banded accel","6 × 20m","2–3 min","Full effort, low achilles impact.",false,"5 × 20m")),
+     G("Strength",
+       X("Back squat","4 × 6","3 min","Your #1 strength driver. Explosive up, controlled down."),
+       X("Romanian deadlift","3 × 8","2.5 min","Posterior chain + eccentric hamstrings."),
+       X("Bulgarian split squat","3 × 8/leg","2 min","Single-leg force = sprint specificity.",false,"2 × 8/leg"),
+       X("Barbell hip thrust","3 × 10","2 min","Horizontal force for acceleration.",true)),
+     G("Hip flexors",
+       X("Banded standing hip flexion","3 × 12/leg","60s","Drive knee to hip height, 1s hold, control down."),
+       X("Weighted knee-up","3 × 10","60s","Hanging or captain's chair; add load as able.")),
+     G("Achilles · HSR", CALF_STAND(), CALF_SEAT()),
+     G("Core · anti-rotation",
+       X("Pallof press","3 × 10/side","45s","Hold 2s. Resist the twist."),
+       X("Suitcase carry","3 × 30m/side","60s","One side loaded — resist tipping.",false,"skip if short"))
+   )},
+   tue:{tag:"Gym B",title:"Full Upper · push-lean",focus:"Athletic + aesthetic: explosive power up front, then hypertrophy. Whole upper 2×/week for size.",full:"70–80 min",short:"45 min",cns:"Low",warm:"lift",ex:[].concat(
+     G("Power (explosive)",
+       X("Med-ball chest pass","3 × 5","60s","Fire it hard into a wall. Fast pressing force through a braced trunk — the athletic version of a press.")),
+     G("Push",
+       X("Push press","4 × 5","2 min","Explosive leg-drive → overhead. Whole-body ground-up force transfer, and builds shoulders."),
+       X("Bench press","4 × 8","2–2.5 min","Primary push — chest & shoulders."),
+       X("Incline DB press","3 × 10","90s","Upper chest + triceps.")),
+     G("Pull",
+       X("Chest-supported row","3 × 10","90s","Pull volume so the back is hit twice this week.")),
+     G("Shoulders",
+       X("Lateral raises","3 × 15","60s","Delt width — the aesthetic ‘V’.",true)),
+     G("Hamstrings",
+       X("Nordic hamstring curl","2 × 5","2 min","Control the eccentric. Halves hamstring-injury risk.")),
+     G("Core · anti-rotation + power",
+       X("Cable chop","3 × 10/side","45s","Tall- or half-kneeling."),
+       X("Med-ball rotational throw","3 × 6/side","45s","Explosive, into a wall.",true))
+   )},
+   wed:{tag:"Speed Day",title:"Track — or gym instead",focus:"Your one protected speed day. Quality over everything.",cns:"High",variant:{
+     aLabel:"At the track",bLabel:"In the gym instead",def:"a",fieldStyle:true,
+     a:{full:"session-led",note:"Coaches run it. Arrive fresh, cap true max-effort volume around 250–300m, and stop when form decays. Do your HSR calves after (or that evening).",warm:"field",ex:[].concat(
+        G("Speed",
+          X("Follow the group session","accel + speed","—","Let the coaches drive it — your job is to be fresh and sharp."),
+          X("Cap max-effort volume","≤ 250–300m","full","Stop when times drop or mechanics decay — that's the signal.")),
+        G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))},
+     b:{full:"55 min",short:"40 min",note:"No track? Run this yourself — never lose your one weekly speed stimulus.",warm:"sprint",ex:[].concat(
+        G("Acceleration",
+          X("Acceleration","6 × 20m","~2 min walk-back","From a 2-point stance, full effort."),
+          X("Resisted accel","4 × 15–20m","2 min","Banded or incline-treadmill (Reference → Accel options).",true)),
+        G("Tempo",
+          X("Extensive tempo","4 × 60m @ 75%","90s walk","Work capacity, low CNS cost. Bike/rower fine.",true)),
+        G("Core",
+          X("Front plank","3 × 30s","45s","Brace hard.",true),
+          X("Copenhagen plank","3 × 20s/side","45s","Top leg on a bench — adductor + anti-tip.",true)),
+        G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))}
+   }},
+   thu:{tag:"Field / Optional",title:"Frisbee — or gym instead",focus:"Multidirectional conditioning and fun — or a light gym day if you skip it.",cns:"Mod",variant:{
+     aLabel:"Frisbee mini",bLabel:"In the gym instead",def:"a",fieldStyle:true,
+     a:{full:"play",note:"Play. Warm the hamstrings first — cutting cold is the #1 hamstring tweak. This is your multidirectional conditioning.",warm:"field",ex:[].concat(
+        G("Play",X("Warm up, then play","—","—","Do the warm-up above, then enjoy it. Great low-cost conditioning.")))},
+     b:{full:"40–50 min",short:"25 min",note:"Skipped frisbee? Keep this LOW-CNS — yesterday was your speed day. (Skipped Wed too? See ‘If I skip track/frisbee’.)",warm:"lift",ex:[].concat(
+        G("Conditioning",
+          X("Bike or row intervals","8 × 40s easy","60s","Recovery-promoting, not hard.",false,"6 × 40s")),
+        G("Accessory (aesthetic)",
+          X("Lateral raises","3 × 15","45s","Free delt volume on a light day.",true),
+          X("Incline DB curl","3 × 12","45s","Arms.",true),
+          X("Face pulls","3 × 15","45s","Rear delts + shoulder health.",true)),
+        G("Core · anti-extension",
+          X("Ab-wheel rollout","3 × 8","45s","Resist the low back arching."),
+          X("Copenhagen plank","3 × 20s/side","45s","Adductor + anti-lateral-flexion.")),
+        G("Mobility",
+          X("Mobility flow","~8 min","—","Ankles, hips, T-spine.",true)))}
+   }},
+   fri:{tag:"Gym C",title:"Full Upper · pull-lean",focus:"Athletic + aesthetic: an explosive pull up front, then whole-upper hypertrophy. Keeps legs recovering.",full:"70–80 min",short:"45 min",cns:"Low",warm:"lift",ex:[].concat(
+     G("Power (explosive)",
+       X("Med-ball overhead slam","3 × 6","60s","Reach tall, slam down hard. Fast lat-driven pulling power through the trunk.")),
+     G("Pull",
+       X("Weighted pull-ups","4 × 6–8","2.5 min","Back width. (or lat pulldown)"),
+       X("Chest-supported / barbell row","4 × 8","2 min","Back thickness, posture.")),
+     G("Push",
+       X("Incline DB press","3 × 10","90s","Push volume — chest hit 2×/week.")),
+     G("Arms & rear delts",
+       X("Face pulls","3 × 15","60s","Rear delts + shoulder health.",true),
+       X("Incline DB curl","3 × 10","60s","Biceps.",true),
+       X("Hammer curl","3 × 10","60s","Brachialis / forearms.",true)),
+     G("Achilles · HSR", CALF_PRESS()),
+     G("Core · anti-extension + posterior",
+       X("Ab-wheel rollout","3 × 8","45s","Anti-extension."),
+       X("Copenhagen plank","3 × 20–30s/side","45s","Adductor + anti-lateral-flexion. Build the holds up."),
+       X("Back extension","3 × 12","45s","Weighted. Durable low back.",true)),
+     G("Mobility",
+       X("Mobility flow","~8 min","—","Ankles, hip flexors, T-spine.",true))
+   )},
+   sat:{tag:"Gym D · Optional",title:"Plyo — or Contrast",focus:"Pick the light pure-plyo day, or a heavier contrast day when you're recovering well.",cns:"Mod",variant:{
+     aLabel:"Pure plyo (light)",bLabel:"Contrast (heavier)",def:"a",
+     a:{full:"65 min",short:"35 min",note:"Light on strength by design — jumps stay crisp because Monday carries your strength. Skip it and you lose almost no strength.",warm:"sprint",ex:[].concat(
+        G("Plyometrics",
+          X("Pogo hops","3 × 20","90s","Low, stiff-ankle."),
+          X("Box jumps","4 × 4","2 min","Step down. Soft landings."),
+          X("Squat jumps","4 × 4","2 min","Bilateral vertical power."),
+          X("Broad jumps","4 × 3","2 min","Stick the landing. Horizontal power = accel.",false,"3 × 3")),
+        G("Strength",
+          X("Romanian deadlift","3 × 8","2 min","Heavier hamstring work.",true)),
+        G("Hip flexors",
+          X("Explosive banded knee drive","3 × 8/leg","60s","Drive up fast, control down."),
+          X("A-skips","2 × 20m","60s","Snappy, aggressive knee drive.")),
+        G("Conditioning",
+          X("Extensive tempo","bike/rower 6 × 40s easy","90s","Non-impact spares the achilles.",true)),
+        G("Core · rotational power",
+          X("Med-ball rotational throw","3 × 6/side","45s","Explosive.",true),
+          X("Suitcase carry","3 × 30m/side","60s","Loaded trunk stiffness.",true)),
+        G("Achilles · HSR (light)",
+          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))},
+     b:{full:"75 min",short:"50 min",note:"Real strength + potentiated jumps in one day. Each pair: heavy lift first (explosive), rest 30s–2min, then the matched jump — the lift primes a bigger jump. More fatiguing, so use it when fresh.",warm:"sprint",ex:[].concat(
+        G("Contrast pair 1 · squat → box jump",
+          X("Back squat","4 × 3 @ ~80%","30s–2min → jump","Heavy but explosive. Then straight to the box jumps.",false,null,CONTRAST),
+          X("Box jumps","4 × 4","2–3 min before next pair","Potentiated by the squat. Max height, soft landings.")),
+        G("Contrast pair 2 · RDL → broad jump",
+          X("Romanian deadlift","3 × 5","30s–2min → jump","Explosive hip drive."),
+          X("Broad jumps","3 × 3","2–3 min","Stick the landing. Horizontal power = accel.")),
+        G("Contrast pair 3 · split squat → split jump",
+          X("Bulgarian split squat","3 × 5/leg","30s–2min → jump","Loaded, controlled.",false,"2 × 5/leg"),
+          X("Split-squat jumps","3 × 4/leg","2 min","Switch legs mid-air, land soft.",false,"2 × 4/leg")),
+        G("Plyometrics",
+          X("Pogo hops","2 × 20","90s","Reactive finisher.")),
+        G("Hip flexors",
+          X("Explosive banded knee drive","3 × 8/leg","60s","Fast up, control down.")),
+        G("Conditioning",
+          X("Extensive tempo","bike/rower 6 × 40s easy","90s","Non-impact.",true)),
+        G("Achilles · HSR (light)",
+          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))}
+   }},
+   sun:{rest:true,note:"Full recovery. Neural fatigue from speed work lingers 48–72h — this day is what makes the hard days work."}
+ }},
+
+ b2:{name:"Block 2 · Strength → Power & Max Velocity (Months 3–4)",days:{
+   mon:{tag:"Gym A",title:"Lower Strength + Accel",focus:"Heavier, more explosive. Drive the squat toward ~1.75–2× bodyweight.",full:"80–90 min",short:"50 min",cns:"High",warm:"sprint",ex:[].concat(
+     G("Plyometrics",
+       X("Pogo hops","2 × 20","60s","Low primer — keeps the reactive pattern frequent.")),
+     G("Acceleration",
+       X("Acceleration sprints","6 × 20–30m","full 2–3 min","Flat now (or banded).",false,"5 × 20m")),
+     G("Strength",
+       X("Back squat","5 × 3–5","3 min","Heavy, explosive concentric. (front squat alt weeks)"),
+       X("Bulgarian split squat","3 × 6/leg","2 min","Loaded heavier than Block 1.",false,"2 × 6/leg")),
+     G("Power / jumps",
+       X("Broad jumps","4 × 3","2 min","Explosive power right after heavy squats = light potentiation.")),
+     G("Hip flexors",
+       X("Banded hip flexion (loaded)","3 × 10/leg","60s","More band tension / ankle weight."),
+       X("Weighted knee-up","3 × 10","60s","")),
+     G("Achilles · HSR", CALF_STAND(), CALF_SEAT()),
+     G("Core · anti-rotation",
+       X("Half-kneeling cable chop","3 × 10/side","45s","",false,"2 × 10/side"))
+   )},
+   tue:{tag:"Gym B",title:"Full Upper · push-lean",focus:"Athletic + aesthetic: explosive power first, then heavier hypertrophy (mains 4×5–6).",full:"70 min",short:"45 min",cns:"Low",warm:"lift",ex:[].concat(
+     G("Power (explosive)",
+       X("Med-ball chest pass","3 × 5","60s","Fire it hard into a wall. Fast pressing force through a braced trunk.")),
+     G("Push",
+       X("Push press","4 × 5","2 min","Explosive leg-drive → overhead. Whole-body force transfer + shoulders."),
+       X("Bench press","4 × 5–6","2.5 min","Heavier now."),
+       X("Incline DB press","3 × 8","90s","")),
+     G("Pull",
+       X("Chest-supported row","3 × 8","90s","Back hit 2×/week.")),
+     G("Shoulders",
+       X("Lateral raises","3 × 15","60s","",true)),
+     G("Hamstrings",
+       X("Nordic hamstring curl","2 × 6","2 min","Hamstring insurance.")),
+     G("Core · anti-rotation + power",
+       X("Cable chop","3 × 10/side","45s",""),
+       X("Med-ball rotational throw","3 × 6/side","45s","",true))
+   )},
+   wed:{tag:"Speed Day",title:"Track — flying sprints",focus:"Max-velocity work: flying sprints are the key top-end stimulus.",cns:"High",variant:{
+     aLabel:"At the track",bLabel:"In the gym instead",def:"a",fieldStyle:true,
+     a:{full:"session-led",note:"Flying sprints build the top speed that wins the 100m. Full recovery between reps — pure quality.",warm:"sprint",ex:[].concat(
+        G("Speed",
+          X("Flying 20s","4–6 × (20m build → 20m @ 100%)","3–5 min full","Total max-effort ≤ 300m. Stop if form decays."),
+          X("Accel to finish","2 × 40m from a stance","full","Ties accel to top speed.",true)),
+        G("Core", HANGLEG(), X("Pallof press","3 × 10/side","45s","")),
+        G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))},
+     b:{full:"50 min",note:"Max-velocity needs a ~40m run-up, so this is best outdoors. The gym fallback below is a compromise — get to open ground when you can.",warm:"sprint",ex:[].concat(
+        G("Speed (fallback)",
+          X("High-incline treadmill sprints","5 × 15–20s","2–3 min","10–15% incline, hard. Trains accel power, not true max-V.")),
+        G("Plyometrics",
+          X("Alternating bounds","4 × 20m","2 min","Reactive horizontal power."),
+          X("Single-leg pogo hops","3 × 8/leg","90s","Unilateral stiffness.")),
+        G("Core", HANGLEG(), X("Pallof press","3 × 10/side","45s","")),
+        G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))}
+   }},
+   thu:{tag:"Field / Optional",title:"Frisbee — or gym instead",focus:"Multidirectional conditioning — or a light gym day.",cns:"Mod",variant:{
+     aLabel:"Frisbee mini",bLabel:"In the gym instead",def:"a",fieldStyle:true,
+     a:{full:"play",note:"Warm hamstrings first. Fun + conditioning.",warm:"field",ex:[].concat(G("Play",X("Warm up, then play","—","—","Warm-up above, then go.")))},
+     b:{full:"40–50 min",short:"25 min",note:"Keep it LOW-CNS after yesterday's speed work. (Skipped Wed too? See the skip guide.)",warm:"lift",ex:[].concat(
+        G("Conditioning",X("Bike or row intervals","8 × 40s easy","60s","",false,"6 × 40s")),
+        G("Accessory (aesthetic)",
+          X("Lateral raises","3 × 15","45s","",true),
+          X("Incline DB curl","3 × 12","45s","",true),
+          X("Face pulls","3 × 15","45s","",true)),
+        G("Core · anti-extension",
+          X("Ab-wheel rollout","3 × 8","45s",""),
+          X("Copenhagen plank","3 × 20s/side","45s","")),
+        G("Mobility",X("Mobility flow","~8 min","—","Ankles, hips, T-spine.",true)))}
+   }},
+   fri:{tag:"Gym C",title:"Full Upper · pull-lean",focus:"Athletic + aesthetic: explosive pull first, then hypertrophy (mains 4×5–6).",full:"70 min",short:"45 min",cns:"Low",warm:"lift",ex:[].concat(
+     G("Power (explosive)",
+       X("Med-ball overhead slam","3 × 6","60s","Reach tall, slam down hard. Fast lat-driven pulling power.")),
+     G("Pull",
+       X("Weighted pull-ups","4 × 5–6","2.5 min","Back width."),
+       X("Barbell / chest-supported row","4 × 6","2 min","Back thickness.")),
+     G("Push",
+       X("Incline DB press","3 × 10","90s","Push volume.")),
+     G("Arms & rear delts",
+       X("Face pulls","3 × 15","60s","",true),
+       X("Incline DB curl","3 × 10","60s","",true),
+       X("Hammer curl","3 × 10","60s","",true)),
+     G("Achilles · HSR", CALF_PRESS()),
+     G("Core · anti-extension",
+       X("Ab-wheel rollout","3 × 8","45s",""),
+       X("Copenhagen plank","3 × 20–30s/side","45s","Adductor + anti-tip."))
+   )},
+   sat:{tag:"Gym D · Optional",title:"Plyo — or Contrast",focus:"Light single-leg plyo day, or a heavier contrast day when recovering well.",cns:"Mod",variant:{
+     aLabel:"Pure plyo (light)",bLabel:"Contrast (heavier)",def:"a",
+     a:{full:"65 min",short:"40 min",note:"Single-leg & reactive, light on strength so the jumps stay sharp. Monday carries your strength.",warm:"sprint",ex:[].concat(
+        G("Plyometrics",
+          X("Depth jumps","4 × 4","2–3 min","Low box 12–18\", minimal contact. Introduce carefully."),
+          X("Single-leg pogo hops","3 × 8/leg","90s","Unilateral stiffness — sprint-specific."),
+          X("Alternating bounds","4 × 20m","2 min","Horizontal single-leg power."),
+          X("Single-leg box jumps","3 × 4/leg","2 min","Step down. Unilateral power.",true)),
+        G("Strength",
+          X("Romanian deadlift","3 × 6","2 min","",true)),
+        G("Hip flexors",
+          X("Explosive banded knee drive","3 × 8/leg","60s","Fast up, control down."),
+          X("A-skips","2 × 20m","60s","")),
+        G("Conditioning",
+          X("Extensive tempo","bike/rower 6 × 40s","90s","",true)),
+        G("Core · rotational power",
+          X("Med-ball rotational throw","3 × 6/side","45s","",true)),
+        G("Achilles · HSR (light)",
+          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))},
+     b:{full:"75 min",short:"50 min",note:"Strength + potentiated reactive jumps in one day. Heavy lift first (explosive), rest 30s–2min, then the matched jump. Use it fresh — it's demanding.",warm:"sprint",ex:[].concat(
+        G("Contrast pair 1 · squat → depth jump",
+          X("Back squat","4 × 3 @ ~80%","30s–2min → jump","Heavy, explosive concentric.",false,null,CONTRAST),
+          X("Depth jumps","4 × 4","2–3 min before next pair","Low box, minimal ground contact. Potentiated.")),
+        G("Contrast pair 2 · RDL → broad jump",
+          X("Romanian deadlift","3 × 5","30s–2min → jump","Explosive hip drive."),
+          X("Broad jumps","3 × 3","2–3 min","Horizontal power.")),
+        G("Contrast pair 3 · split squat → bound",
+          X("Bulgarian split squat","3 × 5/leg","30s–2min → bound","Loaded.",false,"2 × 5/leg"),
+          X("Alternating bounds","4 × 20m","2 min","Single-leg horizontal power.")),
+        G("Plyometrics",
+          X("Single-leg pogo hops","3 × 8/leg","90s","Unilateral stiffness finisher.")),
+        G("Hip flexors",
+          X("Explosive banded knee drive","3 × 8/leg","60s","Fast up, control down.")),
+        G("Conditioning",
+          X("Extensive tempo","bike/rower 6 × 40s","90s","",true)),
+        G("Achilles · HSR (light)",
+          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))}
+   }},
+   sun:{rest:true,note:"Full recovery. Guard this day — the quality of your speed work depends on it."}
+ }},
+
+ b3:{name:"Block 3 · Speed Peaking & Expression (Months 5–6)",days:{
+   mon:{tag:"Gym A",title:"Potentiation + Speed",focus:"Convert strength to raw speed: a heavy lift primes an explosive sprint.",full:"70 min",short:"50 min",cns:"High",warm:"sprint",ex:[].concat(
+     G("Plyometrics",
+       X("Pogo hops","2 × 20","60s","Low primer.")),
+     G("Strength",
+       X("Heavy back squat","3 × 3 @ ~85%","3 min","The potentiating stimulus.")),
+     G("Speed",
+       X("40yd sprints","4 × 40yd","full (after 4–6 min rest)","Post-activation: the heavy squat primes an explosive sprint. Rehearse your event.")),
+     G("Power / jumps",
+       X("Broad jumps","3 × 3","2.5 min","Explosive horizontal power.",true)),
+     G("Accessory",
+       X("Single-leg hip thrust / split squat","2 × 6","90s","Maintenance.",true)),
+     G("Hip flexors",
+       X("Explosive banded knee drive","2 × 8/leg","60s","Fast up, control down.")),
+     G("Achilles · HSR", CALF_STAND(), CALF_SEAT()),
+     G("Core · anti-rotation",
+       X("Pallof press","2 × 10/side","45s",""))
+   )},
+   tue:{tag:"Gym B",title:"Full Upper · maintain",focus:"Athletic + aesthetic maintenance: explosive power first, then hold size (mains 3–4×5).",full:"55–65 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
+     G("Power (explosive)",
+       X("Med-ball chest pass","3 × 5","60s","Fire it hard into a wall. Keeps the explosive pattern.")),
+     G("Push",
+       X("Push press","3 × 5","2 min","Explosive leg-drive → overhead."),
+       X("Bench press","3–4 × 5","2.5 min",""),
+       X("Incline DB press","3 × 10","90s","")),
+     G("Pull",
+       X("Chest-supported row","3 × 8","90s","")),
+     G("Shoulders",
+       X("Lateral raises","3 × 15","60s","",true)),
+     G("Hamstrings",
+       X("Nordic hamstring curl","2 × 6","2 min","Keep the insurance.")),
+     G("Core · anti-rotation",
+       X("Pallof press","3 × 10/side","45s",""),
+       X("Med-ball rotational throw","3 × 6/side","45s","",true))
+   )},
+   wed:{tag:"Speed Day",title:"Track — peaking",focus:"Maximum quality. Rehearse the actual events.",cns:"High",variant:{
+     aLabel:"At the track",bLabel:"In the gym instead",def:"a",fieldStyle:true,
+     a:{full:"session-led",note:"This is where the times drop. Full recovery, full intent, low volume.",warm:"sprint",ex:[].concat(
+        G("Speed",
+          X("Flying 30s","3–4 × (30m build → 20m fly @ 100%)","full","Top-speed expression."),
+          X("Full efforts","2 × timed 40yd  or  1–2 × 100m @ 95–100%","full","Rehearse exactly what you're testing. Total max ≤ 300m.")),
+        G("Core", HANGLEG()),
+        G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))},
+     b:{full:"45 min",note:"Best done on open ground. Gym fallback trades top-end for accel + reactive quality.",warm:"sprint",ex:[].concat(
+        G("Speed (fallback)",
+          X("High-incline treadmill sprints","4 × 15–20s","3 min","Hard. Accel-power stand-in.")),
+        G("Plyometrics",
+          X("Depth jumps","3 × 3","2–3 min","Keep the elastic quality sharp."),
+          X("Alternating bounds","3 × 20m","2 min","")),
+        G("Core", HANGLEG()),
+        G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))}
+   }},
+   thu:{tag:"Field / Optional",title:"Frisbee — or gym instead",focus:"Conditioning & fun — or a light gym day.",cns:"Mod",variant:{
+     aLabel:"Frisbee mini",bLabel:"In the gym instead",def:"a",fieldStyle:true,
+     a:{full:"play",note:"Warm hamstrings first, then play.",warm:"field",ex:[].concat(G("Play",X("Warm up, then play","—","—","Warm-up above first.")))},
+     b:{full:"40 min",short:"25 min",note:"Low-CNS. (Skipped Wed too? See the skip guide.)",warm:"lift",ex:[].concat(
+        G("Conditioning",X("Bike or row intervals","8 × 40s easy","60s","",false,"6 × 40s")),
+        G("Accessory (aesthetic)",
+          X("Lateral raises","3 × 15","45s","",true),
+          X("Incline DB curl","3 × 12","45s","",true),
+          X("Face pulls","3 × 15","45s","",true)),
+        G("Core · anti-extension",
+          X("Ab-wheel rollout","3 × 8","45s",""),
+          X("Copenhagen plank","3 × 20s/side","45s","")))}
+   }},
+   fri:{tag:"Gym C",title:"Full Upper · maintain",focus:"Athletic + aesthetic maintenance: explosive pull first, then hold size (mains 3–4×5).",full:"55–65 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
+     G("Power (explosive)",
+       X("Med-ball overhead slam","3 × 6","60s","Reach tall, slam down hard.")),
+     G("Pull",
+       X("Weighted pull-ups","3–4 × 5","2.5 min",""),
+       X("Row","4 × 6","2 min","")),
+     G("Push",
+       X("Incline DB press","3 × 10","90s","")),
+     G("Arms & rear delts",
+       X("Face pulls","3 × 15","60s","",true),
+       X("Incline DB curl","3 × 10","60s","",true)),
+     G("Achilles · HSR", CALF_PRESS()),
+     G("Core · anti-extension",
+       X("Ab-wheel rollout","3 × 8","45s",""),
+       X("Copenhagen plank","3 × 20–30s/side","45s",""))
+   )},
+   sat:{tag:"Gym D · Optional",title:"Explosive — or Contrast",focus:"Springy low-volume maintenance, or a fuller contrast day. Keep volume down — you're peaking.",cns:"Mod",variant:{
+     aLabel:"Light (reactive)",bLabel:"Contrast (heavier)",def:"a",
+     a:{full:"45 min",short:"30 min",note:"Peaking block — stay springy, don't accumulate fatigue that dulls your speed days.",warm:"sprint",ex:[].concat(
+        G("Power · contrast (single pair)",
+          X("Bulgarian split squat","3 × 3 @ ~80%","30s–2min → jump","Then straight to the split-squat jumps.",false,null,CONTRAST),
+          X("Split-squat jumps","3 × 5/leg","2–3 min","Potentiated by the split squat.")),
+        G("Plyometrics",
+          X("Depth jumps","3 × 3","2–3 min","Reactive quality."),
+          X("Single-leg pogo hops","3 × 6/leg","90s","")),
+        G("Strength",
+          X("Romanian deadlift","2 × 6","2 min","",true)),
+        G("Hip flexors",
+          X("Explosive banded knee drive","2 × 8/leg","60s","")),
+        G("Conditioning",
+          X("Short tempo","bike/rower 6 × 30s","60s","",true)),
+        G("Achilles · HSR (light)",
+          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))},
+     b:{full:"60 min",short:"45 min",note:"More strength via contrast, still peaking-appropriate. Heavy lift first, short rest, matched jump. Don't let it bleed into Monday's freshness.",warm:"sprint",ex:[].concat(
+        G("Contrast pair 1 · squat → depth jump",
+          X("Back squat","3 × 3 @ ~85%","30s–2min → jump","Heavy, explosive.",false,null,CONTRAST),
+          X("Depth jumps","3 × 3","2–3 min before next pair","Reactive, potentiated.")),
+        G("Contrast pair 2 · split squat → split jump",
+          X("Bulgarian split squat","3 × 4/leg","30s–2min → jump","Loaded."),
+          X("Split-squat jumps","3 × 5/leg","2 min","Land soft.")),
+        G("Contrast pair 3 · RDL → broad jump",
+          X("Romanian deadlift","2 × 5","30s–2min → jump","Explosive hip drive."),
+          X("Broad jumps","3 × 3","2 min","Horizontal power.")),
+        G("Plyometrics",
+          X("Single-leg pogo hops","3 × 6/leg","90s","Finisher.")),
+        G("Hip flexors",
+          X("Explosive banded knee drive","2 × 8/leg","60s","")),
+        G("Achilles · HSR (light)",
+          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))}
+   }},
+   sun:{rest:true,note:"Full recovery, especially in a peaking block — freshness is what expresses your speed."}
+ }},
+
+ mt:{name:"Maintenance · Month 7 onward",days:{
+   mon:{tag:"Lower",title:"Strength + Accel + Plyo primer",focus:"Hold strength, accel and knee-drive with far less volume.",full:"55–65 min",short:"40 min",cns:"High",warm:"sprint",ex:[].concat(
+     G("Plyometrics",
+       X("Pogo hops","2 × 20","60s","Keeps the reactive pattern frequent."),
+       X("Box jumps","3 × 4","90s","Step down.")),
+     G("Acceleration",
+       X("Banded / incline accel","5 × 20m","2 min","Full effort.")),
+     G("Strength",
+       X("Back squat","4 × 4","3 min","Hold your relative strength."),
+       X("Bulgarian split squat","3 × 6/leg","2 min","",false,"2 × 6/leg"),
+       X("Barbell hip thrust","3 × 8","2 min","",true)),
+     G("Hip flexors",
+       X("Banded standing hip flexion","3 × 12/leg","60s","Drive knee up, 1s hold.")),
+     G("Achilles · HSR", CALF_STAND(), CALF_SEAT()),
+     G("Core · anti-rotation",
+       X("Pallof press","2 × 10/side","45s",""))
+   )},
+   tue:{tag:"Upper",title:"Full Upper · push-lean + Nordic",focus:"Athletic + aesthetic: explosive power first, then whole upper (each muscle 2×/week across Tue + Fri).",full:"50–60 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
+     G("Power (explosive)",
+       X("Med-ball chest pass","3 × 5","60s","Fire it hard into a wall.")),
+     G("Push",
+       X("Push press","3 × 6","2 min","Explosive leg-drive → overhead."),
+       X("Bench press","4 × 6","2.5 min",""),
+       X("Incline DB press","3 × 10","90s","")),
+     G("Pull",
+       X("Chest-supported row","3 × 10","90s","")),
+     G("Shoulders",
+       X("Lateral raises","3 × 15","60s","",true)),
+     G("Hamstrings",
+       X("Nordic hamstring curl","2 × 6","2 min","Cheap hamstring insurance.")),
+     G("Core · anti-rotation",
+       X("Pallof press or chop","3 × 10/side","45s",""))
+   )},
+   wed:{tag:"Speed Day",title:"Speed — keep top-end alive",focus:"One real speed day a week is the minimum to hold your speed.",full:"45 min",cns:"High",warm:"sprint",ex:[].concat(
+     G("Speed",
+       X("Flying 20s","4 × (20m build → 20m @ 100%)","full 3–5 min","Or full 40yd / 100m efforts. Cap ≤ 300m.")),
+     G("Core", HANGLEG()),
+     G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))
+   },
+   thu:{rest:true,note:"Optional rest, frisbee, or a light bike / mobility day — your call. Maintenance is flexible."},
+   fri:{tag:"Upper",title:"Full Upper · pull-lean + Core",focus:"Athletic + aesthetic: explosive pull first, then whole-upper pull-leaning day.",full:"50–60 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
+     G("Power (explosive)",
+       X("Med-ball overhead slam","3 × 6","60s","Reach tall, slam down hard.")),
+     G("Pull",
+       X("Weighted pull-ups","4 × 6","2.5 min",""),
+       X("Row","4 × 8","2 min","")),
+     G("Push",
+       X("Incline DB press","3 × 10","90s","")),
+     G("Arms & rear delts",
+       X("Face pulls","3 × 15","60s","",true),
+       X("Incline DB curl","3 × 10","60s","",true)),
+     G("Achilles · HSR", CALF_PRESS()),
+     G("Core · anti-extension",
+       X("Ab-wheel rollout","3 × 8","45s","")))
+   },
+   sat:{tag:"Optional",title:"Plyo — or Contrast",focus:"Keep the springs — light, or a fuller contrast day. Optional either way.",cns:"Mod",variant:{
+     aLabel:"Pure plyo (light)",bLabel:"Contrast (heavier)",def:"a",
+     a:{full:"40 min",short:"30 min",note:"Enough to hold your reactive qualities with minimal cost.",warm:"sprint",ex:[].concat(
+        G("Plyometrics",
+          X("Depth / box jumps","3 × 4","2 min","Step-down landings."),
+          X("Single-leg pogo hops","3 × 6/leg","90s",""),
+          X("Broad jumps","3 × 3","2 min","")),
+        G("Strength",
+          X("Romanian deadlift","3 × 8","2 min","",true)),
+        G("Hip flexors",
+          X("Explosive banded knee drive","2 × 8/leg","60s","")),
+        G("Conditioning",
+          X("Easy tempo","bike 6 × 40s","90s","",true)),
+        G("Achilles · HSR (light)",
+          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))},
+     b:{full:"55 min",short:"40 min",note:"A second strength dose via contrast. Heavy lift first, short rest, matched jump.",warm:"sprint",ex:[].concat(
+        G("Contrast pair 1 · squat → box jump",
+          X("Back squat","3 × 3 @ ~80%","30s–2min → jump","Heavy, explosive.",false,null,CONTRAST),
+          X("Box jumps","3 × 4","2–3 min before next pair","Step down. Potentiated.")),
+        G("Contrast pair 2 · RDL → broad jump",
+          X("Romanian deadlift","3 × 6","30s–2min → jump","Explosive hip drive."),
+          X("Broad jumps","3 × 3","2 min","Horizontal power.")),
+        G("Plyometrics",
+          X("Single-leg pogo hops","3 × 6/leg","90s","Finisher.")),
+        G("Hip flexors",
+          X("Explosive banded knee drive","2 × 8/leg","60s","")),
+        G("Achilles · HSR (light)",
+          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))}
+   }},
+   sun:{rest:true,note:"Rest."}
+ }}
+};
+
+const DOW=[["mon","MON"],["tue","TUE"],["wed","WED"],["thu","THU"],["fri","FRI"],["sat","SAT"],["sun","SUN"]];
+const TAGSHORT={mon:"Lower",tue:"Push",wed:"Speed",thu:"Field",fri:"Pull",sat:"Plyo",sun:"Rest"};
+
+const todayKey=(()=>{const d=new Date().getDay(); return d===0?"sun":DOW[d-1][0];})();
+const state={block:"b1",day:todayKey,short:false,variant:{}};
+
+const lanesEl=document.getElementById('lanes'), rootEl=document.getElementById('dayRoot');
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+
+function renderLanes(){
+  lanesEl.innerHTML=DOW.map(([k,lbl],i)=>{
+    const dd=P[state.block].days[k]; const cls=['lane'];
+    if(k===state.day)cls.push('active'); if(k===todayKey)cls.push('today'); if(dd.rest)cls.push('rest');
+    return `<button class="${cls.join(' ')}" onclick="pick('${k}')" aria-label="${lbl}"><div class="num">${i+1}</div><div class="dow">${lbl[0]}</div><div class="tag">${TAGSHORT[k]}</div></button>`;
+  }).join('');
+}
+function warmupHTML(key){
+  if(!key)return''; const w=WARM[key];
+  const body=w.phases.map(p=>`<div class="wphase"><span class="ph">${p.phase}</span><ul>${p.items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`).join('');
+  return `<details class="warm"><summary><span class="wlabel">Warm-up · ${w.label}</span><span class="wsub">${w.sub}</span><span class="caret">▾</span></summary><div class="wbody">${body}</div></details>`;
+}
+function exHTML(list){
+  let html='<div class="list">', lastSec=null, n=0;
+  for(const x of list){
+    if(x.sec && x.sec!==lastSec){ html+=`<div class="sechead"><span class="lbl">${esc(x.sec)}</span><span class="rule"></span></div>`; lastSec=x.sec; }
+    n++;
+    const cut=x.pri==='opt', idx=String(n).padStart(2,'0');
+    const badge=cut?`<span class="badge cut">cut if short</span>`:'';
+    const shorttag=(x.short&&!cut)?`<span class="shorttag"> → ${esc(x.short)}</span>`:'';
+    const det=x.d?`<details class="det"><summary>details</summary><div class="dbody">${x.d}</div></details>`:'';
+    html+=`<div class="ex ${cut?'cut':''}"><div class="idx">${idx}</div><div>
+      <div class="name">${esc(x.n)}${badge}</div>
+      <div class="presc"><span class="sets">${esc(x.p)}${shorttag}</span>${(x.rest&&x.rest!=='—')?`<span class="rest"><span class="rk">rest</span> ${esc(x.rest)}</span>`:''}</div>
+      ${x.note?`<div class="note">${esc(x.note)}</div>`:''}${det}</div></div>`;
+  }
+  return html+'</div>';
+}
+function metaHTML(d,vFull,vShort){
+  const full=vFull||d.full; const short=(vShort!==undefined)?vShort:d.short; let c='';
+  if(full)c+=`<span class="chip"><span class="k">full</span><span class="v">${esc(full)}</span></span>`;
+  if(short)c+=`<span class="chip ${state.short?'short-hi':''}"><span class="k">short</span><span class="v">${esc(short)}</span></span>`;
+  if(d.cns)c+=`<span class="chip"><span class="k">CNS</span><span class="cns ${d.cns}">${d.cns}</span></span>`;
+  return `<div class="meta">${c}</div>`;
+}
+const LEGEND=`<div class="legend"><span><i style="background:var(--cut)"></i>cut if short on time</span><span><i style="background:var(--keep)"></i>short-mode reductions</span></div>`;
+
+function renderDay(){
+  const d=P[state.block].days[state.day];
+  const dowLbl=DOW.find(x=>x[0]===state.day)[1];
+  if(d.rest){ rootEl.innerHTML=`<div class="day"><div class="dayhead"><div class="eyebrow">${dowLbl} · Rest</div></div><div class="restday"><div class="big">REST</div><p>${esc(d.note)}</p></div></div>`; return; }
+  if(d.variant){
+    const chosen=state.variant[state.block+state.day]||d.variant.def, v=d.variant[chosen];
+    rootEl.innerHTML=`<div class="day"><div class="dayhead"><div class="eyebrow">${dowLbl} · ${esc(d.tag)}</div><div class="daytitle">${esc(d.title)}</div><div class="dayfocus">${esc(d.focus)}</div></div>
+      <div class="variant"><button class="${chosen==='a'?('on'+(d.variant.fieldStyle?' field':'')):''}" onclick="setVar('a')">${esc(d.variant.aLabel)}</button><button class="${chosen==='b'?'on':''}" onclick="setVar('b')">${esc(d.variant.bLabel)}</button></div>
+      ${metaHTML(d,v.full,v.short)}${v.note?`<div class="vnote">${esc(v.note)}</div>`:''}${warmupHTML(v.warm)}${LEGEND}${exHTML(v.ex)}</div>`;
+    return;
+  }
+  rootEl.innerHTML=`<div class="day"><div class="dayhead"><div class="eyebrow">${dowLbl} · ${esc(d.tag)}</div><div class="daytitle">${esc(d.title)}</div><div class="dayfocus">${esc(d.focus)}</div></div>${metaHTML(d)}${warmupHTML(d.warm)}${LEGEND}${exHTML(d.ex)}</div>`;
+}
+function renderAll(){renderLanes();renderDay();}
+function pick(k){state.day=k;renderAll();window.scrollTo({top:0,behavior:'smooth'});}
+function setVar(v){state.variant[state.block+state.day]=v;renderDay();}
+document.getElementById('blockSel').addEventListener('change',e=>{state.block=e.target.value;renderAll();});
+document.getElementById('shortBtn').addEventListener('click',()=>{
+  state.short=!state.short; document.body.classList.toggle('short',state.short);
+  const b=document.getElementById('shortBtn'); b.classList.toggle('on',state.short); b.setAttribute('aria-pressed',state.short);
+  document.getElementById('shortLbl').textContent=state.short?'Short mode on':'Short on time'; renderDay();
+});
+
+const scrim=document.getElementById('scrim'),drawer=document.getElementById('drawer'),drawerIn=document.getElementById('drawerIn');
+function openDrawer(which){drawerIn.innerHTML=`<button class="close" onclick="closeDrawer()" aria-label="Close">✕</button><div class="grab"></div>`+(which==='skip'?SKIP_HTML:REF_HTML);scrim.classList.add('open');drawer.classList.add('open');drawer.scrollTop=0;}
+function closeDrawer(){scrim.classList.remove('open');drawer.classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+
+const SKIP_HTML=`
+  <h2>If I skip track or frisbee</h2>
+  <p>You'll go to at least one of <b>Wed track</b> or <b>Thu frisbee</b>. Here's how to fill the gaps so you never lose the thing that matters most — a weekly max-velocity stimulus.</p>
+  <div class="skiprow"><div class="lab">Skip Wed<br>track</div><div class="txt">Open the Wednesday card and switch to <b>“In the gym instead.”</b> That's your self-run speed day. Never delete your only top-speed session.</div></div>
+  <div class="skiprow"><div class="lab">Skip Thu<br>frisbee</div><div class="txt">Switch the Thursday card to <b>“In the gym instead”</b> — light non-impact conditioning + accessory + core. Keep it low-CNS because Wednesday was your hard day.</div></div>
+  <div class="skiprow"><div class="lab">Skip both</div><div class="txt">Make <b>one</b> of the two your speed day (gym speed session) and the other the light conditioning/accessory day. Do the speed day first, when you're freshest.</div></div>
+  <div class="skiprow"><div class="lab">Only 4<br>gym days</div><div class="txt">Priority: <b>Mon (never skip) → a speed day → one Upper → Sat plyos.</b> Still trains all five qualities: accelerate, hit top speed, lift heavy, drive the knee, stay springy & resilient.</div></div>
+  <div class="kv"><span class="h">The rule underneath all of it</span><b>48–72h between true max-effort days.</b> Speed work and heavy lifting are both high-CNS. However you rearrange, don't stack two hard days back-to-back — put a low or rest day between them.</div>`;
+
+const REF_HTML=`
+  <h2>Reference</h2>
+  <h3>Priority hierarchy</h3>
+  <p>Most → least impact on your times: <b>1) sprinting</b> (accel + max-velocity) → <b>2) heavy strength</b> → <b>3) plyometrics</b> → <b>4) support work</b> (hip flexors, core, contrast). Protect the top when time is short.</p>
+  <h3>Plyometrics — dosing</h3>
+  <p><b>~2×/week on both a Mon primer and the Sat session</b> (not just one day). Start ~40–60 quality ground contacts, progress ~10%/week toward 80+. Bilateral & soft first → single-leg & reactive later. Both vertical and horizontal matter. Since Saturday is optional, keep it rather than cut it if you want the full second dose.</p>
+  <h3>Achilles — HSR protocol</h3>
+  <div class="kv">${HSR}</div>
+  <div class="kv"><span class="h">Isometrics — overcoming vs yielding</span>Your Saturday finisher uses <b>overcoming</b> isometrics: press maximally into an immovable resistance (pins, fixed strap, a loaded machine you can't move). They build tendon stiffness and fast force with zero impact, and you set the intensity by how hard you push — kind to an irritated tendon. On a cranky-tendon day, swap to <b>yielding</b> holds instead (hold a heavy load in place, 3 × 30–45s) — better for calming pain. Both obey the ≤3/10 rule.</div>
+  <h3>Accel options (no hill / no sled)</h3>
+  <p>Anywhere it says “accel,” pick what you have, best-first: <b>banded sprints</b> → <b>incline-treadmill sprints</b> (8–15%, achilles-friendly) → curved/manual treadmill push → stairs → <b>flat accel sprints</b> (fine on their own).</p>
+  <h3>Contrast training (optional)</h3>
+  <div class="kv">${CONTRAST}<br><br>Useful but not a priority — sprinting, strength and plyos are the real drivers.</div>
+  <h3>Core menu</h3>
+  <p><b>Anti-rotation:</b> Pallof press, cable chop, suitcase carry, bird dog. <b>Anti-extension:</b> ab-wheel, hollow hold, hanging leg raise, dead bug. <b>Anti-lateral-flexion:</b> Copenhagen plank, single-arm carry. <b>Rotational power:</b> med-ball throws. <b>Posterior:</b> back extension. One block per day; the trunk's job in sprinting is to resist motion so force transfers cleanly.</p>
+  <h3>Upper body — athletic role</h3>
+  <p>For sprinting the upper body is a <b>rhythm & balance system, not propulsion</b> — arm drive counters the trunk rotation your legs create and sets cadence (tighter, faster arms pull leg turnover up). So it won't move your 40 much. The athletic value is training the upper body to produce and transfer force <b>explosively through a braced trunk</b>: push press (ground-up transfer), med-ball throws (fast force through the trunk), and the anti-rotation core work. The hypertrophy work stays for the aesthetic goal — you get both.</p>
+  <h3>Testing — every 8 weeks</h3>
+  <p>Retest fresh & warm: <b>40yd, 100m, flying 10–20m, broad jump, single-leg broad jump (L vs R), back-squat 1RM/bodyweight.</b> Log achilles pain (0–10) + morning stiffness weekly.</p>
+  <h3>Fueling</h3>
+  <p>Not dietary advice, but: as a lean hard-gainer, conditioning can quietly eat your surplus. Athletes commonly use a modest surplus on training days, protein ~1.6–2.2 g/kg (~100–135 g/day for you), enough carbs for speed sessions. Cut sessions before you cut calories.</p>`;
+
+document.getElementById('blockSel').value=state.block;
+renderAll();
+</script>
+</body>
+</html>
