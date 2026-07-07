@@ -172,7 +172,6 @@
 <div class="wrap"><div class="lanes" id="lanes"></div><div id="dayRoot"></div></div>
 
 <div class="bottombar"><div class="bottombar-in">
-  <button class="bbtn" onclick="openDrawer('skip')"><span class="ic">↔</span> If I skip track / frisbee</button>
   <button class="bbtn" onclick="openDrawer('ref')"><span class="ic">≡</span> Reference</button>
 </div></div>
 
@@ -181,17 +180,25 @@
 
 <script>
 /* ---------- detail text ---------- */
-const HSR = "<b>3s up / 3s down, no bounce.</b> You're past early rehab, so go heavy: 5–6RM × 4 sets, working toward 4–5 reps @ 85–90%. Or swap in 5×4 near-max isometric holds (3s each) for high tendon strain, zero impact. <b>Pain ≤3/10, settles within 24h</b>; morning stiffness must not trend worse. Never skip — tendons keep gains only while loaded.";
+const HSR = "<b>Heavy slow resistance: 3s up / 3s down, no bounce, one leg at a time.</b> Load heavy (~6-rep max) — heavy-slow builds more tendon stiffness and strength than Alfredson eccentric-only heel drops, takes far less time, and is what lets sprinting stop hurting. Train single-leg so the strong side can't cover the weak one. Add load as you get stronger. <b>Pain ≤3/10, settles within 24h</b>; morning stiffness must not trend worse. Never skip — tendons keep gains only while loaded.";
 const CONTRAST = "Load ~75–85% 1RM, 3 explosive reps → <b>rest 30s–2min</b> (not zero — lets fatigue fade so the jump is more explosive) → 3–5 max-quality plyo reps. 3–4 pairs. Land soft.";
+const DJ_DET = "<b>Box height:</b> 12–24\" — start ~12–18\" and only go higher if you can still <b>bounce off the ground fast</b> (short ground-contact time). Height isn't the point; contact time is. <b>Drop</b> off the box at a slight forward angle (not straight down) to bias the posterior chain and add forward reactivity. 3–5 reps × 4–5 sets, <b>full rest 2–3 min</b> — these are max-intent, quality over quantity.";
+const SL_PROG = "Single-leg horizontal reactive jumps (single-leg broad jumps, bounds) are among the <b>most sprint-specific plyos there are</b> — horizontal + single-leg + reactive is literally the acceleration stride, and the research favours horizontal jumps for sprint transfer. They strain your tendon, but per the <b>pain-monitoring model</b> (a level-1 RCT on achilles tendinopathy) that's fine and even beneficial <b>as long as pain stays ≤5/10 during, doesn't climb across the session, and settles to baseline by next morning.</b> Continuing to load the tendon this way is safe — avoidance isn't required. If it breaks those limits, cut distance/volume (don't eliminate), lean on bilateral jumps + heavy isometrics that week, then rebuild. Keep them max-intent: 3–5 reps, full rest.";
+const ADV_PLYO = "<b>Highest-tier plyos — green-light criteria.</b> These are the most potent reactive/horizontal drills but also the highest Achilles strain. Only add them once, for 2–3 straight weeks, your single-leg broad jumps and bounds have stayed <b>inside the pain rule</b> (≤5/10 during, settled by next morning, morning stiffness not trending up) AND your heavy calf isometrics are pain-free. Introduce <b>one</b> at a time, 3–4 reps, full rest, max intent. If the tendon answers back, drop it and rebuild capacity — no rush; these are a bonus on top of an already-complete plan.";
+const COMBO = "<b>Shock-into-horizontal:</b> step off a low box (12–16\") → land on both feet absorbing the drop → with the <b>shortest possible ground contact</b>, immediately explode <b>forward</b> into a broad jump. The landing pre-loads and potentiates the stretch-shortening cycle, then you redirect that energy horizontally — the exact absorb-and-reapply pattern of acceleration. Very few reps, max intent, full recovery. High value, high strain — pain rule applies.";
 const ISO_DET = "<b>Overcoming</b> = you <b>push</b> maximally into something that can't move (pins, a fixed strap, or a loaded machine you deliberately can't budge), vs <b>yielding</b> = holding a heavy load in place. Overcoming builds tendon stiffness + fast force (what sprinting needs) and you control intensity by how hard you press — gentle on an irritated tendon. Maximal, quick intent. Pain ≤3/10, settles within 24h. Cranky-tendon day → swap to yielding holds: 3 × 30–45s at moderate load.";
+const HF_LEAN = "Cuff the cable/band low at the ankle, face away from the anchor, and <b>lean your torso forward ~30–45°</b> (brace on the machine). Let the working leg <b>trail behind you</b> (hip extended) — then drive the knee forward and up, hard and fast, and control it back. The lean loads the hip flexor in the <b>lengthened, hip-extended position the sprint stride actually uses</b>, and the forward torso mimics the accel body-lean. More specific than an upright knee-drive in both range and posture. Cable is easy to load/progress; a leaning band version works too.";
+const SQ_VAR = "<b>Pin squat</b> (bar starts on pins mid-range, lifted from a dead stop) and <b>box squat</b> (sit to a box, pause, drive up) both kill the elastic bounce, so you produce force <b>concentrically from a static position</b> — the same demand as every sprint step (concentric force, no pre-stretch to borrow). They're arguably <i>more</i> accel-specific than a full squat and cost less eccentric/tissue fatigue. Don't drop the full back squat entirely, though — it's still your best driver of the raw relative-strength number (toward ~2× BW) that correlates with sprint speed. Best used as a <b>rotation</b>: full squats to build the base, pin/box squats in the power block for starting strength. Set pins/box around the depth you hit in your drive-phase (roughly parallel or a touch above).";
+const STEPUP = "One foot on a knee-high box, most of your weight through it, back foot lightly on the floor. Drive up <b>explosively</b> through the top leg into a vertical jump — don't push off the floor leg (keep it honest). Land soft back on the box, reset. This trains <b>single-leg concentric power from a dead stop</b> (no stretch reflex) and mimics the drive-phase knee-drive of acceleration — one of the most sprint-specific single-leg power moves, and a great substitute when you can't run. 3–5 reps/leg, full rest, max intent.";
+const BA_DET = "<b>Overspeed tool.</b> Anchor 2 strong bands overhead in a rack (~7–8 ft), loop under your armpits so they remove ~20–30% of your bodyweight. Now you can jump higher and move <b>faster than bodyweight allows</b> — training CNS firing rate, fast ground-contact times and jump frequency (the velocity end of the curve, a complement to your heavy force work). Cue: pull yourself down into position, then off the ground drive off fast with minimal contact. Start with a lighter band (avoid ‘speed wobbles’). 3 × 5, full rest. Needs a rack + bands — optional.";
+const SLRDL = "Single-leg Romanian deadlift into an immediate vertical hop on the same leg. Hinge at the hip (flat back, hips square), load the hamstring/glute, then explode up. Trains <b>single-leg posterior-chain power + balance</b> and reinforces the hip-hinge that drives jumping and sprinting. Advanced — needs clean single-leg RDL form first. Light or bodyweight, 3 × 4/leg.";
 
 /* ---------- warm-ups ---------- */
 const WARM = {
-  sprint:{label:"Sprint / Power",sub:"~12–15 min · before any sprint, jump or heavy-lower day",phases:[
-    {phase:"Raise · 4 min",items:["Easy jog or bike — 3 min","Leg swings — 10/leg (front-back + side-to-side)","World's greatest stretch — 5/side","Ankle rocks to wall — 10/side (hold last 15s)"]},
-    {phase:"Activate · 4 min",items:["Glute bridge — ×15","Banded lateral walk — ×10 each way","Dead bug — ×6/side","Hip-flexor march ISO — ×5/leg (knee up, hold 3s)"]},
-    {phase:"Drills · 5 min",items:["A-skips — 2×20m","B-skips — 2×20m","Ankling — 2×20m","Straight-leg bounds — 1×20m","Build-ups — ×3 (40m, jog → 90%)"]},
-    {phase:"No room to run?",items:["Treadmill 60–90s ramp (walk → jog → run) instead of build-ups","Or: pogos ×20 + fast A-marches ×20s + 3 primer jumps"]}
+  sprint:{label:"Sprint / Power",sub:"~9–11 min · before any jump or heavy-lower day",phases:[
+    {phase:"Raise · 4 min",items:["Easy bike — 3 min","Leg swings — 10/leg (front-back + side-to-side)","World's greatest stretch — 5/side","Ankle rocks to wall — 10/side"]},
+    {phase:"Activate · 2–3 min",items:["Glute bridge — ×15","Banded lateral walk — ×10 each way","Hip-flexor march ISO — ×5/leg (knee up, hold 3s)"]},
+    {phase:"Prime · 2–3 min",items:["A-skips — 2×20m (or in place)","Pogo hops — ×20 (stiff ankle)","3 hard primer jumps (broad or vertical)"]}
   ]},
   lift:{label:"Lift",sub:"~6–8 min · before upper-body days",phases:[
     {phase:"~6–8 min",items:["Bike or row — 3 min","Band pull-aparts — ×20","Band shoulder pass-throughs — ×10","Scap push-ups — ×10","2 ramp sets of your first lift (~40%, then ~60%)"]}
@@ -206,473 +213,432 @@ function X(n,p,rest,note,opt,short,d){return {n,p,rest,note:note||"",pri:opt?'op
 function G(sec,...items){return items.map(o=>Object.assign({sec},o));}
 
 /* reusable items */
-const CALF_STAND = ()=>X("Standing calf raise","3s up / 3s down","2 min","Knee straight — gastrocnemius. Full range off a step.",false,null,HSR);
-const CALF_SEAT  = ()=>X("Seated calf raise","3s up / 3s down","2 min","Knee bent — soleus. Full range.");
-const CALF_PRESS = ()=>X("Leg-press calf raise","3s up / 3s down","2 min","Heavy, full range, feet low on platform.",false,null,HSR);
+const CALF_STAND = ()=>X("Standing calf raise (single-leg)","3 × 6 · 3s up / 3s down","90s","One leg at a time, knee straight (gastrocnemius). Full range off a step. Heavy — 6-rep max. Superset with the seated raise to save time.",false,null,HSR);
+const CALF_SEAT  = ()=>X("Seated calf raise (single-leg)","3 × 8 · 3s up / 3s down","90s","One leg at a time, knee bent (soleus). Full range, heavy.");
+const CALF_PRESS = ()=>X("Leg-press calf raise (single-leg)","3 × 8 · 3s up / 3s down","90s","One leg at a time, feet low on the platform. Heavy, full range.",false,null,HSR);
 const HANGLEG    = (s)=>X("Hanging leg raise",s||"3 × 12","45s","Also trains the hip flexors. Resist the swing.");
 
 /* ---------- PROGRAM ---------- */
 const P = {
  b1:{name:"Block 1 · Foundation & Tendon Restoration (Months 1–2)",days:{
-   mon:{tag:"Gym A",title:"Lower Strength + Accel",focus:"Heavy force, short accel, a light plyo primer, knee-drive power.",full:"80–90 min",short:"55 min",cns:"High",warm:"sprint",ex:[].concat(
-     G("Plyometrics",
-       X("Pogo hops","2 × 20","60s","Low, stiff-ankle. Reactive stiffness."),
-       X("Box jumps","3 × 4","90s","Step down, don't jump down — soft landings.")),
-     G("Acceleration",
-       X("Incline / banded accel","6 × 20m","2–3 min","Full effort, low achilles impact.",false,"5 × 20m")),
+   mon:{tag:"Gym A",title:"Lower Strength + Accel",focus:"Strength + acceleration. Your 40yd is almost all acceleration, so it gets real work.",full:"80–90 min",short:"55 min",cns:"High",warm:"sprint",ex:[].concat(
+     G("Acceleration (stairs)",
+       X("Stair sprints","5 × 8–12 steps","full 2–3 min","Explosive up, 2 steps at a time. Drives knee lift, hip extension, forward lean — accel mechanics, low impact. Walk down to recover."),
+       X("Stair bounds","4 × 8 steps/leg","full 2 min","Big single-leg push per step, max height/distance. Single-leg horizontal power — the accel stride.",false,null,SL_PROG),
+       X("Sprinter step-up jumps","3 × 4/leg","2 min","Drive up off a knee-high box — single-leg starting strength from a dead stop, mimics the accel drive.",false,null,STEPUP)),
      G("Strength",
        X("Back squat","4 × 6","3 min","Your #1 strength driver. Explosive up, controlled down."),
        X("Romanian deadlift","3 × 8","2.5 min","Posterior chain + eccentric hamstrings."),
-       X("Bulgarian split squat","3 × 8/leg","2 min","Single-leg force = sprint specificity.",false,"2 × 8/leg"),
+       X("Bulgarian split squat","3 × 8/leg","2 min","Single-leg force. Optional — step-ups + Saturday already cover single-leg; cut this first to keep Monday under 90.",true),
        X("Barbell hip thrust","3 × 10","2 min","Horizontal force for acceleration.",true)),
      G("Hip flexors",
-       X("Banded standing hip flexion","3 × 12/leg","60s","Drive knee to hip height, 1s hold, control down."),
-       X("Weighted knee-up","3 × 10","60s","Hanging or captain's chair; add load as able.")),
+       X("Leaning cable knee drive","3 × 10/leg","60s","Torso leaned forward, leg trailing behind, drive the knee through fast. Loads the sprint-relevant hip-extended range.",false,null,HF_LEAN)),
      G("Achilles · HSR", CALF_STAND(), CALF_SEAT()),
      G("Core · anti-rotation",
-       X("Pallof press","3 × 10/side","45s","Hold 2s. Resist the twist."),
-       X("Suitcase carry","3 × 30m/side","60s","One side loaded — resist tipping.",false,"skip if short"))
+       X("Pallof press","3 × 10/side","45s","Hold 2s. Resist the twist — the #1 core quality for sprinting (clean force transfer)."),
+       X("Half-kneeling cable chop","3 × 10/side","45s","Anti-rotation through range — more sprint-specific than a carry.",true))
    )},
-   tue:{tag:"Gym B",title:"Full Upper · push-lean",focus:"Athletic + aesthetic: explosive power up front, then hypertrophy. Whole upper 2×/week for size.",full:"70–80 min",short:"45 min",cns:"Low",warm:"lift",ex:[].concat(
+   tue:{tag:"Gym B",title:"Full Upper · push-lean",focus:"Whole upper, leaning push. Athletic power up front, then hypertrophy.",full:"50–55 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
      G("Power (explosive)",
-       X("Med-ball chest pass","3 × 5","60s","Fire it hard into a wall. Fast pressing force through a braced trunk — the athletic version of a press.")),
+       X("Med-ball chest pass","3 × 5","60s","Fire it hard into a wall. Fast pressing force through a braced trunk.")),
      G("Push",
-       X("Push press","4 × 5","2 min","Explosive leg-drive → overhead. Whole-body ground-up force transfer, and builds shoulders."),
-       X("Bench press","4 × 8","2–2.5 min","Primary push — chest & shoulders."),
-       X("Incline DB press","3 × 10","90s","Upper chest + triceps.")),
+       X("Bench press","4 × 8","2–2.5 min","Horizontal push — chest & shoulders."),
+       X("Push press","3 × 5","2 min","Vertical push — explosive leg-drive → overhead, builds shoulders.")),
      G("Pull",
-       X("Chest-supported row","3 × 10","90s","Pull volume so the back is hit twice this week.")),
-     G("Shoulders",
-       X("Lateral raises","3 × 15","60s","Delt width — the aesthetic ‘V’.",true)),
-     G("Hamstrings",
-       X("Nordic hamstring curl","2 × 5","2 min","Control the eccentric. Halves hamstring-injury risk.")),
-     G("Core · anti-rotation + power",
+       X("Chest-supported row","4 × 8","2 min","Back thickness, posture.")),
+     G("Arms & shoulders",
+       X("Overhead triceps extension","3 × 12","60s","Triceps (long head)."),
+       X("Lateral raises","3 × 15","60s","Delt width.",true)),
+     G("Core · anti-rotation",
        X("Cable chop","3 × 10/side","45s","Tall- or half-kneeling."),
        X("Med-ball rotational throw","3 × 6/side","45s","Explosive, into a wall.",true))
    )},
    wed:{tag:"Speed Day",title:"Track — or gym instead",focus:"Your one protected speed day. Quality over everything.",cns:"High",variant:{
      aLabel:"At the track",bLabel:"In the gym instead",def:"a",fieldStyle:true,
-     a:{full:"session-led",note:"Coaches run it. Arrive fresh, cap true max-effort volume around 250–300m, and stop when form decays. Do your HSR calves after (or that evening).",warm:"field",ex:[].concat(
-        G("Speed",
-          X("Follow the group session","accel + speed","—","Let the coaches drive it — your job is to be fresh and sharp."),
-          X("Cap max-effort volume","≤ 250–300m","full","Stop when times drop or mechanics decay — that's the signal.")),
-        G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))},
-     b:{full:"55 min",short:"40 min",note:"No track? Run this yourself — never lose your one weekly speed stimulus.",warm:"sprint",ex:[].concat(
-        G("Acceleration",
-          X("Acceleration","6 × 20m","~2 min walk-back","From a 2-point stance, full effort."),
-          X("Resisted accel","4 × 15–20m","2 min","Banded or incline-treadmill (Reference → Accel options).",true)),
-        G("Tempo",
-          X("Extensive tempo","4 × 60m @ 75%","90s walk","Work capacity, low CNS cost. Bike/rower fine.",true)),
-        G("Core",
-          X("Front plank","3 × 30s","45s","Brace hard.",true),
-          X("Copenhagen plank","3 × 20s/side","45s","Top leg on a bench — adductor + anti-tip.",true)),
+     a:{full:"session-led",note:"The group runs the warm-up and session. Arrive fresh, cap true max-effort volume ~250–300m, stop when form decays. Do your HSR calves afterward (or that evening).",warm:null,ex:[].concat(
+        G("Prime the tendon (before you sprint)",
+          X("Overcoming calf isometric","3 × 5s","30s","A few hard holds before the session dampen tendon pain and prime it. Not fatiguing — do after the group warm-up.",false,null,ISO_DET)))},
+     b:{full:"65–70 min",short:"40 min",note:"No track and no room to run? Stairs + reactive jumps cover acceleration and elastic power — the trainable parts of speed indoors.",warm:"sprint",ex:[].concat(
+        G("Acceleration (stairs)",
+          X("Stair sprints","6 × 8–12 steps","full 2–3 min","Explosive up, 2 at a time. Walk down to recover."),
+          X("Stair bounds","4 × 8 steps/leg","full 2 min","Big single-leg push per step.",false,null,SL_PROG)),
+        G("Reactive power",
+          X("Depth jumps","4 × 4","2–3 min","Bilateral reactive power.",false,null,DJ_DET),
+          X("Single-leg broad jumps","3 × 3/leg","2 min","Sprint-specific reactive power.",false,null,SL_PROG)),
         G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))}
    }},
    thu:{tag:"Field / Optional",title:"Frisbee — or gym instead",focus:"Multidirectional conditioning and fun — or a light gym day if you skip it.",cns:"Mod",variant:{
      aLabel:"Frisbee mini",bLabel:"In the gym instead",def:"a",fieldStyle:true,
      a:{full:"play",note:"Play. Warm the hamstrings first — cutting cold is the #1 hamstring tweak. This is your multidirectional conditioning.",warm:"field",ex:[].concat(
         G("Play",X("Warm up, then play","—","—","Do the warm-up above, then enjoy it. Great low-cost conditioning.")))},
-     b:{full:"40–50 min",short:"25 min",note:"Skipped frisbee? Keep this LOW-CNS — yesterday was your speed day. (Skipped Wed too? See ‘If I skip track/frisbee’.)",warm:"lift",ex:[].concat(
+     b:{full:"45–55 min",short:"30 min",note:"Trains the field qualities sprinting doesn't: cutting, deceleration, lateral power, landing, rotation. Low-CNS after yesterday's speed work.",warm:"lift",ex:[].concat(
+        G("Quick feet (foot speed)",
+          X("Plate quick-step taps","3 × 20s","45s","Rapid alternating foot taps onto a low plate/step, balls of the feet, arms driving — rhythm, foot speed, ankle stiffness. No ladder needed."),
+          X("Line hops (lateral + fwd/back)","3 × 20s","45s","Fast reactive two-foot hops over a floor line or tape; progress to single-leg. Reactive quick feet + ankle stiffness."),
+          X("Pogo hops","2 × 20","45s","Stiff-ankle bounces — the real driver of quick feet is reactive ankle stiffness, not fancy patterns.")),
+        G("Field movement & landing",
+          X("Skater bounds (lateral)","3 × 6/side","60s","Bound side to side, land single-leg and stick 1s. Lateral power + deceleration — the cut."),
+          X("Broad jump to stick landing","3 × 3","75s","Jump out, land soft and HOLD 2s. Trains the deceleration & landing control you use catching and stopping."),
+          X("Lateral lunge","3 × 8/side","60s","Frontal-plane strength + hip mobility — the sideways positions of field play.")),
+        G("Rotational power",
+          X("Med-ball rotational throw","3 × 6/side","45s","Explosive into a wall — the trunk torque of throwing and cutting."),
+          X("Landmine rotation (explosive)","3 × 6/side","45s","Alternative to the throw — turn from the hips, pivot the back foot, keep the spine stable. Loaded rotational power.",true)),
         G("Conditioning",
-          X("Bike or row intervals","8 × 40s easy","60s","Recovery-promoting, not hard.",false,"6 × 40s")),
-        G("Accessory (aesthetic)",
-          X("Lateral raises","3 × 15","45s","Free delt volume on a light day.",true),
-          X("Incline DB curl","3 × 12","45s","Arms.",true),
-          X("Face pulls","3 × 15","45s","Rear delts + shoulder health.",true)),
-        G("Core · anti-extension",
-          X("Ab-wheel rollout","3 × 8","45s","Resist the low back arching."),
-          X("Copenhagen plank","3 × 20s/side","45s","Adductor + anti-lateral-flexion.")),
+          X("Bike or row intervals","6 × 40s easy","60s","Aerobic, recovery-promoting.",true)),
+        G("Core · anti-rotation",
+          X("Pallof press","3 × 10/side","45s","Resist the twist — clean force transfer.")),
+        G("Accessory (optional aesthetic)",
+          X("Lateral raises","3 × 15","45s","",true),
+          X("Incline DB curl","3 × 12","45s","",true)),
         G("Mobility",
-          X("Ankle / hip / T-spine mobility","~8 min","—","Ankle rocks 10/side · kneeling hip-flexor stretch 30s/side · world's-greatest-stretch 5/side · 90/90 hip rotations 10/side · open-book T-spine 8/side.",true)))}
+          X("Ankle rocks","10/side","—","Wall dorsiflexion."),
+          X("Kneeling hip-flexor stretch","30s/side","—",""),
+          X("World's-greatest-stretch","5/side","—",""),
+          X("90/90 hip rotations","10/side","—",""),
+          X("Open-book T-spine","8/side","—","",true)))}
    }},
-   fri:{tag:"Gym C",title:"Full Upper · pull-lean",focus:"Athletic + aesthetic: an explosive pull up front, then whole-upper hypertrophy. Keeps legs recovering.",full:"70–80 min",short:"45 min",cns:"Low",warm:"lift",ex:[].concat(
+   fri:{tag:"Gym C",title:"Full Upper · pull-lean",focus:"Whole upper, leaning pull. Athletic power up front, then hypertrophy.",full:"55–60 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
      G("Power (explosive)",
-       X("Med-ball overhead slam","3 × 6","60s","Reach tall, slam down hard. Fast lat-driven pulling power through the trunk.")),
+       X("Med-ball overhead slam","3 × 6","60s","Reach tall, slam down hard. Fast lat-driven pulling power.")),
      G("Pull",
-       X("Weighted pull-ups","4 × 6–8","2.5 min","Back width. (or lat pulldown)"),
-       X("Chest-supported / barbell row","4 × 8","2 min","Back thickness, posture.")),
+       X("Weighted pull-ups","4 × 6–8","2.5 min","Vertical pull — back width. (or lat pulldown)"),
+       X("Barbell / DB row","4 × 8","2 min","Horizontal pull — back thickness, posture.")),
      G("Push",
-       X("Incline DB press","3 × 10","90s","Push volume — chest hit 2×/week.")),
+       X("Incline DB press","4 × 8–10","2 min","Horizontal push — upper chest & triceps.")),
      G("Arms & rear delts",
        X("Face pulls","3 × 15","60s","Rear delts + shoulder health.",true),
-       X("Incline DB curl","3 × 10","60s","Biceps.",true),
        X("Hammer curl","3 × 10","60s","Brachialis / forearms.",true)),
      G("Achilles · HSR", CALF_PRESS()),
-     G("Core · anti-extension + posterior",
+     G("Core · anti-extension",
        X("Ab-wheel rollout","3 × 8","45s","Anti-extension."),
-       X("Copenhagen plank","3 × 20–30s/side","45s","Adductor + anti-lateral-flexion. Build the holds up."),
-       X("Back extension","3 × 12","45s","Weighted. Durable low back.",true)),
+       X("Copenhagen plank","3 × 20–30s/side","45s","Adductor + anti-lateral-flexion.")),
      G("Mobility",
-       X("Ankle / hip / T-spine mobility","~8 min","—","Ankle rocks 10/side · kneeling hip-flexor stretch 30s/side · world's-greatest-stretch 5/side · 90/90 hip rotations 10/side · open-book T-spine 8/side.",true))
+       X("Ankle rocks","10/side","—","Wall dorsiflexion.",true),
+       X("Kneeling hip-flexor stretch","30s/side","—","",true),
+       X("Open-book T-spine","8/side","—","",true))
    )},
-   sat:{tag:"Gym D · Optional",title:"Plyo — or Contrast",focus:"Pick the light pure-plyo day, or a heavier contrast day when you're recovering well.",cns:"Mod",variant:{
-     aLabel:"Pure plyo (light)",bLabel:"Contrast (heavier)",def:"a",
-     a:{full:"65 min",short:"35 min",note:"Light on strength by design — jumps stay crisp because Monday carries your strength. Skip it and you lose almost no strength.",warm:"sprint",ex:[].concat(
-        G("Plyometrics",
-          X("Pogo hops","3 × 20","90s","Low, stiff-ankle."),
-          X("Box jumps","4 × 4","2 min","Step down. Soft landings."),
-          X("Squat jumps","4 × 4","2 min","Bilateral vertical power."),
-          X("Broad jumps","4 × 3","2 min","Stick the landing. Horizontal power = accel.",false,"3 × 3")),
-        G("Strength",
-          X("Romanian deadlift","3 × 8","2 min","Heavier hamstring work.",true)),
+   sat:{tag:"Gym D",title:"Plyometrics",focus:"Your dedicated reactive/power day, done fresh. The single highest-value jump session of the week.",full:"80–85 min",short:"50 min",cns:"Mod",warm:"sprint",ex:[].concat(
+        G("Plyometrics · reactive (main)",
+          X("Pogo hops","3 × 20","60s","Low, stiff-ankle — primes ankle reactivity. Short ground contact."),
+          X("Depth jumps","4 × 4","2–3 min","12–18\" box, drop at a slight forward angle, minimal ground contact (bounce off fast). The premier reactive plyo.",false,null,DJ_DET),
+          X("Broad jumps","4 × 3","2 min","Bilateral horizontal power — horizontal jumps transfer best to sprint. Stick the landing.")),
+        G("Plyometrics · single-leg (most sprint-specific)",
+          X("Cycled split-squat jumps","3 × 5/leg","2 min","Explosive split-stance jump, switch legs mid-air and land soft. The mid-air cycle mirrors the reciprocal leg action of sprinting — better than the static version."),
+          X("Single-leg broad jumps","3 × 3/leg","2 min","Horizontal + single-leg + reactive = the accel stride. Govern by the pain rule.",false,null,SL_PROG),
+          X("Band-assisted jumps","3 × 5","2 min","Overspeed / velocity work — faster than bodyweight allows. Needs a rack + strong bands.",false,null,BA_DET)),
+        G("Strength accessory (after the jumps — keep light)",
+          X("Nordic hamstring curl","2 × 5","2 min","Hamstring as a knee flexor — eccentric, halves hamstring-injury risk."),
+          X("Single-leg RDL","2 × 8/leg","90s","Hamstring as a hip extensor + glute + balance — the pattern the Nordic misses. Light/moderate, controlled.")),
         G("Hip flexors",
           X("Explosive banded knee drive","3 × 8/leg","60s","Drive up fast, control down."),
-          X("A-skips","2 × 20m","60s","Snappy, aggressive knee drive.")),
-        G("Conditioning",
-          X("Extensive tempo","bike/rower 6 × 40s easy","90s","Non-impact spares the achilles.",true)),
-        G("Core · rotational power",
-          X("Med-ball rotational throw","3 × 6/side","45s","Explosive.",true),
-          X("Suitcase carry","3 × 30m/side","60s","Loaded trunk stiffness.",true)),
-        G("Achilles · HSR (light)",
-          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))},
-     b:{full:"75 min",short:"50 min",note:"Real strength + potentiated jumps in one day. Each pair: heavy lift first (explosive), rest 30s–2min, then the matched jump — the lift primes a bigger jump. More fatiguing, so use it when fresh.",warm:"sprint",ex:[].concat(
-        G("Contrast pair 1 · squat → box jump",
-          X("Back squat","4 × 3 @ ~80%","30s–2min → jump","Heavy but explosive. Then straight to the box jumps.",false,null,CONTRAST),
-          X("Box jumps","4 × 4","2–3 min before next pair","Potentiated by the squat. Max height, soft landings.")),
-        G("Contrast pair 2 · RDL → broad jump",
-          X("Romanian deadlift","3 × 5","30s–2min → jump","Explosive hip drive."),
-          X("Broad jumps","3 × 3","2–3 min","Stick the landing. Horizontal power = accel.")),
-        G("Contrast pair 3 · split squat → split jump",
-          X("Bulgarian split squat","3 × 5/leg","30s–2min → jump","Loaded, controlled.",false,"2 × 5/leg"),
-          X("Split-squat jumps","3 × 4/leg","2 min","Switch legs mid-air, land soft.",false,"2 × 4/leg")),
-        G("Plyometrics",
-          X("Pogo hops","2 × 20","90s","Reactive finisher.")),
-        G("Hip flexors",
-          X("Explosive banded knee drive","3 × 8/leg","60s","Fast up, control down.")),
-        G("Conditioning",
-          X("Extensive tempo","bike/rower 6 × 40s easy","90s","Non-impact.",true)),
-        G("Achilles · HSR (light)",
-          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))}
-   }},
+          X("A-skips","2 × 20m","60s","Snappy knee drive.")),
+        G("Core · anti-rotation",
+          X("Pallof press","3 × 10/side","45s","Resist the twist — the #1 core quality for sprinting.",true),
+          X("Med-ball rotational throw","3 × 6/side","45s","Explosive.",true)),
+        G("Achilles · HSR (heavy)",
+          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Builds the tendon capacity that lets sprinting & single-leg work stop hurting.",false,null,ISO_DET)))
+   },
    sun:{rest:true,note:"Full recovery. Neural fatigue from speed work lingers 48–72h — this day is what makes the hard days work."}
  }},
 
  b2:{name:"Block 2 · Strength → Power & Max Velocity (Months 3–4)",days:{
-   mon:{tag:"Gym A",title:"Lower Strength + Accel",focus:"Heavier, more explosive. Drive the squat toward ~1.75–2× bodyweight.",full:"80–90 min",short:"50 min",cns:"High",warm:"sprint",ex:[].concat(
-     G("Plyometrics",
-       X("Pogo hops","2 × 20","60s","Low primer — keeps the reactive pattern frequent.")),
-     G("Acceleration",
-       X("Acceleration sprints","6 × 20–30m","full 2–3 min","Flat now (or banded).",false,"5 × 20m")),
+   mon:{tag:"Gym A",title:"Lower Strength + Accel",focus:"Heavier strength + acceleration. Drive the squat toward ~1.75–2× bodyweight.",full:"85–90 min",short:"55 min",cns:"High",warm:"sprint",ex:[].concat(
+     G("Acceleration (stairs)",
+       X("Stair sprints","5 × 8–12 steps","full 2–3 min","Explosive up, 2 at a time. Accel mechanics, low impact. Walk down to recover."),
+       X("Stair bounds","3 × 8 steps/leg","full 2 min","Big single-leg push per step, max distance.",false,null,SL_PROG),
+       X("Sprinter step-up jumps","3 × 4/leg","2 min","Drive up off a knee-high box — single-leg starting strength, mimics the accel drive.",false,null,STEPUP)),
      G("Strength",
-       X("Back squat","5 × 3–5","3 min","Heavy, explosive concentric. (front squat alt weeks)"),
-       X("Bulgarian split squat","3 × 6/leg","2 min","Loaded heavier than Block 1.",false,"2 × 6/leg")),
-     G("Power / jumps",
-       X("Broad jumps","4 × 3","2 min","Explosive power right after heavy squats = light potentiation.")),
+       X("Back squat (or pin/box squat)","5 × 3–5","3 min","Rotate in pin or box squats here in this block: dead-stop concentric = starting strength, which is exactly what accel is.",false,null,SQ_VAR),
+       X("Romanian deadlift","3 × 6","2.5 min","Posterior chain + eccentric hamstrings — a top sprint lift and hamstring insurance."),
+       X("Bulgarian split squat","3 × 6/leg","2 min","Loaded heavier than Block 1. Optional — cut first to keep Monday under 90.",true)),
      G("Hip flexors",
-       X("Banded hip flexion (loaded)","3 × 10/leg","60s","More band tension / ankle weight."),
-       X("Weighted knee-up","3 × 10","60s","")),
+       X("Leaning cable knee drive","3 × 10/leg","60s","Leaned forward, leg trailing, drive the knee through fast.",false,null,HF_LEAN)),
      G("Achilles · HSR", CALF_STAND(), CALF_SEAT()),
      G("Core · anti-rotation",
        X("Half-kneeling cable chop","3 × 10/side","45s","",false,"2 × 10/side"))
    )},
-   tue:{tag:"Gym B",title:"Full Upper · push-lean",focus:"Athletic + aesthetic: explosive power first, then heavier hypertrophy (mains 4×5–6).",full:"70 min",short:"45 min",cns:"Low",warm:"lift",ex:[].concat(
+   tue:{tag:"Gym B",title:"Full Upper · push-lean",focus:"Whole upper, leaning push (mains 4×5–6 this block).",full:"55 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
      G("Power (explosive)",
        X("Med-ball chest pass","3 × 5","60s","Fire it hard into a wall. Fast pressing force through a braced trunk.")),
      G("Push",
-       X("Push press","4 × 5","2 min","Explosive leg-drive → overhead. Whole-body force transfer + shoulders."),
-       X("Bench press","4 × 5–6","2.5 min","Heavier now."),
-       X("Incline DB press","3 × 8","90s","")),
+       X("Bench press","4 × 5–6","2.5 min","Horizontal push — heavier this block."),
+       X("Push press","4 × 5","2 min","Vertical push — explosive leg-drive → overhead.")),
      G("Pull",
-       X("Chest-supported row","3 × 8","90s","Back hit 2×/week.")),
-     G("Shoulders",
+       X("Chest-supported row","4 × 6","2 min","Back thickness.")),
+     G("Arms & shoulders",
+       X("Overhead triceps extension","3 × 12","60s","Triceps (long head)."),
        X("Lateral raises","3 × 15","60s","",true)),
-     G("Hamstrings",
-       X("Nordic hamstring curl","2 × 6","2 min","Hamstring insurance.")),
-     G("Core · anti-rotation + power",
+     G("Core · anti-rotation",
        X("Cable chop","3 × 10/side","45s",""),
        X("Med-ball rotational throw","3 × 6/side","45s","",true))
    )},
-   wed:{tag:"Speed Day",title:"Track — flying sprints",focus:"Max-velocity work: flying sprints are the key top-end stimulus.",cns:"High",variant:{
+   wed:{tag:"Speed Day",title:"Track — or gym instead",focus:"Your protected speed day. Flying sprints for top-end — the coaches run it.",cns:"High",variant:{
      aLabel:"At the track",bLabel:"In the gym instead",def:"a",fieldStyle:true,
-     a:{full:"session-led",note:"Flying sprints build the top speed that wins the 100m. Full recovery between reps — pure quality.",warm:"sprint",ex:[].concat(
-        G("Speed",
-          X("Flying 20s","4–6 × (20m build → 20m @ 100%)","3–5 min full","Total max-effort ≤ 300m. Stop if form decays."),
-          X("Accel to finish","2 × 40m from a stance","full","Ties accel to top speed.",true)),
-        G("Core", HANGLEG(), X("Pallof press","3 × 10/side","45s","")),
-        G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))},
-     b:{full:"50 min",note:"Max-velocity needs a ~40m run-up, so this is best outdoors. The gym fallback below is a compromise — get to open ground when you can.",warm:"sprint",ex:[].concat(
-        G("Speed (fallback)",
-          X("High-incline treadmill sprints","5 × 15–20s","2–3 min","10–15% incline, hard. Trains accel power, not true max-V.")),
-        G("Plyometrics",
-          X("Alternating bounds","4 × 20m","2 min","Reactive horizontal power."),
-          X("Single-leg pogo hops","3 × 8/leg","90s","Unilateral stiffness.")),
+     a:{full:"session-led",note:"The group runs the warm-up and session. Flying sprints build top speed — full recovery between reps, cap max-effort ~300m, stop if form decays. HSR calves afterward.",warm:null,ex:[].concat(
+        G("Prime the tendon (before you sprint)",
+          X("Overcoming calf isometric","3 × 5s","30s","A few hard holds before sprinting dampen tendon pain and prime it. Not fatiguing — do after the group warm-up.",false,null,ISO_DET)))},
+     b:{full:"70–75 min",note:"No track and no room to run? Stairs + reactive jumps train acceleration and elastic power — the trainable parts of speed indoors.",warm:"sprint",ex:[].concat(
+        G("Acceleration (stairs)",
+          X("Stair sprints","6 × 8–12 steps","full 2–3 min","Explosive up, 2 at a time. Walk down to recover."),
+          X("Stair bounds","4 × 8 steps/leg","full 2 min","Big single-leg push per step.",false,null,SL_PROG)),
+        G("Reactive power",
+          X("Depth-to-broad combo","4 × 3","2–3 min","Depth-drop → immediate broad jump. Absorb and instantly reapply horizontally — the accel pattern.",false,null,COMBO),
+          X("Single-leg broad jumps","3 × 3/leg","2 min","Sprint-specific reactive power.",false,null,SL_PROG)),
         G("Core", HANGLEG(), X("Pallof press","3 × 10/side","45s","")),
         G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))}
    }},
-   thu:{tag:"Field / Optional",title:"Frisbee — or gym instead",focus:"Multidirectional conditioning — or a light gym day.",cns:"Mod",variant:{
+   thu:{tag:"Field / Optional",title:"Frisbee — or gym instead",focus:"Field conditioning & fun — or a functional field-prep gym day.",cns:"Mod",variant:{
      aLabel:"Frisbee mini",bLabel:"In the gym instead",def:"a",fieldStyle:true,
      a:{full:"play",note:"Warm hamstrings first. Fun + conditioning.",warm:"field",ex:[].concat(G("Play",X("Warm up, then play","—","—","Warm-up above, then go.")))},
-     b:{full:"40–50 min",short:"25 min",note:"Keep it LOW-CNS after yesterday's speed work. (Skipped Wed too? See the skip guide.)",warm:"lift",ex:[].concat(
-        G("Conditioning",X("Bike or row intervals","8 × 40s easy","60s","",false,"6 × 40s")),
-        G("Accessory (aesthetic)",
+     b:{full:"45–55 min",short:"30 min",note:"Trains the field qualities sprinting doesn't: cutting, deceleration, lateral power, landing, rotation. Low-CNS after your speed day.",warm:"lift",ex:[].concat(
+        G("Quick feet (foot speed)",
+          X("Plate quick-step taps","3 × 20s","45s","Rapid alternating foot taps onto a low plate/step, balls of the feet, arms driving — rhythm, foot speed, ankle stiffness. No ladder needed."),
+          X("Line hops (lateral + fwd/back)","3 × 20s","45s","Fast reactive two-foot hops over a floor line or tape; progress to single-leg. Reactive quick feet + ankle stiffness."),
+          X("Pogo hops","2 × 20","45s","Stiff-ankle bounces — the real driver of quick feet is reactive ankle stiffness, not fancy patterns.")),
+        G("Field movement & landing",
+          X("Skater bounds (lateral)","3 × 6/side","60s","Bound side to side, land single-leg and stick 1s. Lateral power + deceleration — the cut."),
+          X("Broad jump to stick landing","3 × 3","75s","Jump out, land soft and HOLD 2s. Deceleration & landing control."),
+          X("Lateral lunge","3 × 8/side","60s","Frontal-plane strength + hip mobility.")),
+        G("Rotational power",
+          X("Med-ball rotational throw","3 × 6/side","45s","Explosive into a wall — trunk torque of throwing and cutting."),
+          X("Landmine rotation (explosive)","3 × 6/side","45s","Alternative to the throw — turn from the hips, pivot the back foot, keep the spine stable. Loaded rotational power.",true)),
+        G("Conditioning",
+          X("Bike or row intervals","6 × 40s easy","60s","Aerobic, recovery-promoting.",true)),
+        G("Core · anti-rotation",
+          X("Pallof press","3 × 10/side","45s","Resist the twist.")),
+        G("Accessory (optional aesthetic)",
           X("Lateral raises","3 × 15","45s","",true),
-          X("Incline DB curl","3 × 12","45s","",true),
-          X("Face pulls","3 × 15","45s","",true)),
-        G("Core · anti-extension",
-          X("Ab-wheel rollout","3 × 8","45s",""),
-          X("Copenhagen plank","3 × 20s/side","45s","")),
-        G("Mobility",X("Ankle / hip / T-spine mobility","~8 min","—","Ankle rocks 10/side · kneeling hip-flexor stretch 30s/side · world's-greatest-stretch 5/side · 90/90 hip rotations 10/side · open-book T-spine 8/side.",true)))}
+          X("Incline DB curl","3 × 12","45s","",true)),
+        G("Mobility",
+          X("Ankle rocks","10/side","—","Wall dorsiflexion."),
+          X("Kneeling hip-flexor stretch","30s/side","—",""),
+          X("World's-greatest-stretch","5/side","—",""),
+          X("90/90 hip rotations","10/side","—",""),
+          X("Open-book T-spine","8/side","—","",true)))}
    }},
-   fri:{tag:"Gym C",title:"Full Upper · pull-lean",focus:"Athletic + aesthetic: explosive pull first, then hypertrophy (mains 4×5–6).",full:"70 min",short:"45 min",cns:"Low",warm:"lift",ex:[].concat(
+   fri:{tag:"Gym C",title:"Full Upper · pull-lean",focus:"Whole upper, leaning pull (mains 4×5–6 this block).",full:"55–60 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
      G("Power (explosive)",
        X("Med-ball overhead slam","3 × 6","60s","Reach tall, slam down hard. Fast lat-driven pulling power.")),
      G("Pull",
-       X("Weighted pull-ups","4 × 5–6","2.5 min","Back width."),
-       X("Barbell / chest-supported row","4 × 6","2 min","Back thickness.")),
+       X("Weighted pull-ups","4 × 5–6","2.5 min","Vertical pull — back width."),
+       X("Barbell / DB row","4 × 6","2 min","Horizontal pull — back thickness.")),
      G("Push",
-       X("Incline DB press","3 × 10","90s","Push volume.")),
+       X("Incline DB press","4 × 8","2 min","Horizontal push — upper chest.")),
      G("Arms & rear delts",
        X("Face pulls","3 × 15","60s","",true),
-       X("Incline DB curl","3 × 10","60s","",true),
        X("Hammer curl","3 × 10","60s","",true)),
      G("Achilles · HSR", CALF_PRESS()),
      G("Core · anti-extension",
        X("Ab-wheel rollout","3 × 8","45s",""),
-       X("Copenhagen plank","3 × 20–30s/side","45s","Adductor + anti-tip."))
+       X("Copenhagen crunch","3 × 8–10/side","45s","Dynamic adductor raise/lower — full-range groin strength for cutting. Start knee-bent (short lever), control the lowering; hold a plank instead if the bottom feels sketchy."))
    )},
-   sat:{tag:"Gym D · Optional",title:"Plyo — or Contrast",focus:"Light single-leg plyo day, or a heavier contrast day when recovering well.",cns:"Mod",variant:{
-     aLabel:"Pure plyo (light)",bLabel:"Contrast (heavier)",def:"a",
-     a:{full:"65 min",short:"40 min",note:"Single-leg & reactive, light on strength so the jumps stay sharp. Monday carries your strength.",warm:"sprint",ex:[].concat(
-        G("Plyometrics",
-          X("Depth jumps","4 × 4","2–3 min","Low box 12–18\", minimal contact. Introduce carefully."),
-          X("Single-leg pogo hops","3 × 8/leg","90s","Unilateral stiffness — sprint-specific."),
-          X("Alternating bounds","4 × 20m","2 min","Horizontal single-leg power."),
-          X("Single-leg box jumps","3 × 4/leg","2 min","Step down. Unilateral power.",true)),
-        G("Strength",
-          X("Romanian deadlift","3 × 6","2 min","",true)),
+   sat:{tag:"Gym D",title:"Plyometrics",focus:"Your dedicated reactive/power day, done fresh — now single-leg and reactive.",full:"75–80 min",short:"50 min",cns:"Mod",warm:"sprint",ex:[].concat(
+        G("Plyometrics · reactive (main)",
+          X("Depth jumps","4 × 4","2–3 min","12–18\" box, fast bounce-off, minimal contact — premier reactive plyo.",false,null,DJ_DET),
+          X("Depth-to-broad combo","3 × 3","2–3 min","Depth-drop → immediate broad jump. Absorb and instantly reapply horizontally — the accel pattern.",false,null,COMBO)),
+        G("Plyometrics · single-leg (most sprint-specific)",
+          X("Cycled split-squat jumps","3 × 5/leg","2 min","Explosive split-stance jump, switch legs mid-air — mirrors the reciprocal leg cycling of sprinting."),
+          X("Single-leg broad jumps","3 × 3/leg","2 min","Horizontal + single-leg + reactive — the acceleration stride. Govern by the pain rule.",false,null,SL_PROG),
+          X("Bounds","4 × 20m (or in place)","2 min","Continuous single-leg horizontal power. Pain rule applies.",true,null,SL_PROG),
+          X("Band-assisted jumps","3 × 5","2 min","Overspeed / velocity work — faster than bodyweight allows. Needs a rack + strong bands.",false,null,BA_DET)),
+        G("Strength accessory (after the jumps — keep light)",
+          X("Nordic hamstring curl","2 × 6","2 min","Hamstring as a knee flexor — eccentric injury insurance."),
+          X("Single-leg RDL","2 × 8/leg","90s","Hamstring as a hip extensor + glute + balance — complements the Nordic. Light/moderate.")),
         G("Hip flexors",
           X("Explosive banded knee drive","3 × 8/leg","60s","Fast up, control down."),
           X("A-skips","2 × 20m","60s","")),
-        G("Conditioning",
-          X("Extensive tempo","bike/rower 6 × 40s","90s","",true)),
-        G("Core · rotational power",
-          X("Med-ball rotational throw","3 × 6/side","45s","",true)),
-        G("Achilles · HSR (light)",
-          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))},
-     b:{full:"75 min",short:"50 min",note:"Strength + potentiated reactive jumps in one day. Heavy lift first (explosive), rest 30s–2min, then the matched jump. Use it fresh — it's demanding.",warm:"sprint",ex:[].concat(
-        G("Contrast pair 1 · squat → depth jump",
-          X("Back squat","4 × 3 @ ~80%","30s–2min → jump","Heavy, explosive concentric.",false,null,CONTRAST),
-          X("Depth jumps","4 × 4","2–3 min before next pair","Low box, minimal ground contact. Potentiated.")),
-        G("Contrast pair 2 · RDL → broad jump",
-          X("Romanian deadlift","3 × 5","30s–2min → jump","Explosive hip drive."),
-          X("Broad jumps","3 × 3","2–3 min","Horizontal power.")),
-        G("Contrast pair 3 · split squat → bound",
-          X("Bulgarian split squat","3 × 5/leg","30s–2min → bound","Loaded.",false,"2 × 5/leg"),
-          X("Alternating bounds","4 × 20m","2 min","Single-leg horizontal power.")),
-        G("Plyometrics",
-          X("Single-leg pogo hops","3 × 8/leg","90s","Unilateral stiffness finisher.")),
-        G("Hip flexors",
-          X("Explosive banded knee drive","3 × 8/leg","60s","Fast up, control down.")),
-        G("Conditioning",
-          X("Extensive tempo","bike/rower 6 × 40s","90s","",true)),
-        G("Achilles · HSR (light)",
-          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))}
-   }},
+        G("Core · anti-rotation",
+          X("Pallof press","3 × 10/side","45s","Resist the twist.",true),
+          X("Med-ball rotational throw","3 × 6/side","45s","Explosive.",true)),
+        G("Achilles · HSR (heavy)",
+          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — builds the tendon capacity that lets sprinting & single-leg work stop hurting.",false,null,ISO_DET)))
+   },
    sun:{rest:true,note:"Full recovery. Guard this day — the quality of your speed work depends on it."}
  }},
 
  b3:{name:"Block 3 · Speed Peaking & Expression (Months 5–6)",days:{
-   mon:{tag:"Gym A",title:"Potentiation + Speed",focus:"Convert strength to raw speed: a heavy lift primes an explosive sprint.",full:"70 min",short:"50 min",cns:"High",warm:"sprint",ex:[].concat(
-     G("Plyometrics",
-       X("Pogo hops","2 × 20","60s","Low primer.")),
+   mon:{tag:"Gym A",title:"Potentiation + Speed",focus:"A heavy lift primes an explosive effort — contrast training, which preserves sprint speed.",full:"60 min",short:"50 min",cns:"High",warm:"sprint",ex:[].concat(
      G("Strength",
-       X("Heavy back squat","3 × 3 @ ~85%","3 min","The potentiating stimulus.")),
-     G("Speed",
-       X("40yd sprints","4 × 40yd","full (after 4–6 min rest)","Post-activation: the heavy squat primes an explosive sprint. Rehearse your event.")),
-     G("Power / jumps",
-       X("Broad jumps","3 × 3","2.5 min","Explosive horizontal power.",true)),
+       X("Heavy back squat (or pin squat)","3 × 3 @ ~85%","3 min","Pin squats fit especially well here — dead-stop concentric mirrors the sprint start.",false,null,SQ_VAR)),
+     G("Speed (contrast)",
+       X("Stair sprints (after the squat)","5 × 8–12 steps","full 3 min","Post-activation: the heavy squat primes an explosive stair sprint. Max effort, 2 at a time."),
+       X("Sprinter step-up jumps","2 × 4/leg","2 min","Single-leg drive-phase power off a box.",false,null,STEPUP)),
      G("Accessory",
-       X("Single-leg hip thrust / split squat","2 × 6","90s","Maintenance.",true)),
+       X("Single-leg hip thrust / split squat","2 × 6","90s","Maintenance.",true),
+       X("Single-leg quarter pin squat","3 × 4/leg","90s","Optional peaking tool: high force at the shallow knee/hip angles you hit in a sprint stride. Partial-range, narrow carryover — accessory, not a squat replacement.",true)),
      G("Hip flexors",
-       X("Explosive banded knee drive","2 × 8/leg","60s","Fast up, control down.")),
+       X("Leaning cable knee drive","2 × 10/leg","60s","Leaned forward, leg trailing, drive through fast.",false,null,HF_LEAN)),
      G("Achilles · HSR", CALF_STAND(), CALF_SEAT()),
      G("Core · anti-rotation",
        X("Pallof press","2 × 10/side","45s",""))
    )},
-   tue:{tag:"Gym B",title:"Full Upper · maintain",focus:"Athletic + aesthetic maintenance: explosive power first, then hold size (mains 3–4×5).",full:"55–65 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
+   tue:{tag:"Gym B",title:"Full Upper · push-lean",focus:"Whole upper, leaning push — maintenance (mains 3–4×5).",full:"45–50 min",short:"35 min",cns:"Low",warm:"lift",ex:[].concat(
      G("Power (explosive)",
        X("Med-ball chest pass","3 × 5","60s","Fire it hard into a wall. Keeps the explosive pattern.")),
      G("Push",
-       X("Push press","3 × 5","2 min","Explosive leg-drive → overhead."),
-       X("Bench press","3–4 × 5","2.5 min",""),
-       X("Incline DB press","3 × 10","90s","")),
+       X("Bench press","3–4 × 5","2.5 min","Horizontal push."),
+       X("Push press","3 × 5","2 min","Vertical push.")),
      G("Pull",
-       X("Chest-supported row","3 × 8","90s","")),
-     G("Shoulders",
+       X("Chest-supported row","3 × 8","2 min","Horizontal pull.")),
+     G("Arms & shoulders",
+       X("Overhead triceps extension","3 × 12","60s","Triceps.",true),
        X("Lateral raises","3 × 15","60s","",true)),
-     G("Hamstrings",
-       X("Nordic hamstring curl","2 × 6","2 min","Keep the insurance.")),
      G("Core · anti-rotation",
        X("Pallof press","3 × 10/side","45s",""),
        X("Med-ball rotational throw","3 × 6/side","45s","",true))
    )},
-   wed:{tag:"Speed Day",title:"Track — peaking",focus:"Maximum quality. Rehearse the actual events.",cns:"High",variant:{
+   wed:{tag:"Speed Day",title:"Track — or gym instead",focus:"Peaking speed day — maximum quality, rehearse the events. The coaches run it.",cns:"High",variant:{
      aLabel:"At the track",bLabel:"In the gym instead",def:"a",fieldStyle:true,
-     a:{full:"session-led",note:"This is where the times drop. Full recovery, full intent, low volume.",warm:"sprint",ex:[].concat(
-        G("Speed",
-          X("Flying 30s","3–4 × (30m build → 20m fly @ 100%)","full","Top-speed expression."),
-          X("Full efforts","2 × timed 40yd  or  1–2 × 100m @ 95–100%","full","Rehearse exactly what you're testing. Total max ≤ 300m.")),
-        G("Core", HANGLEG()),
-        G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))},
-     b:{full:"45 min",note:"Best done on open ground. Gym fallback trades top-end for accel + reactive quality.",warm:"sprint",ex:[].concat(
-        G("Speed (fallback)",
-          X("High-incline treadmill sprints","4 × 15–20s","3 min","Hard. Accel-power stand-in.")),
-        G("Plyometrics",
-          X("Depth jumps","3 × 3","2–3 min","Keep the elastic quality sharp."),
-          X("Alternating bounds","3 × 20m","2 min","")),
+     a:{full:"session-led",note:"The group runs the warm-up and session. Full recovery, full intent, low volume — this is where the times drop. Cap max-effort ~300m. HSR calves afterward.",warm:null,ex:[].concat(
+        G("Prime the tendon (before you sprint)",
+          X("Overcoming calf isometric","3 × 5s","30s","A few hard holds before full efforts dampen tendon pain and prime it. Not fatiguing — do after the group warm-up.",false,null,ISO_DET)))},
+     b:{full:"70–75 min",note:"No track and no room to run? Rehearse the 40yd on stairs and keep reactive quality sharp — make it count.",warm:"sprint",ex:[].concat(
+        G("Acceleration (stairs)",
+          X("Stair sprints (max effort)","6 × 8–12 steps","full 3 min","Explosive up, 2 at a time — your event rehearsal indoors."),
+          X("Stair bounds","3 × 8 steps/leg","full 2 min","Big single-leg push per step.",false,null,SL_PROG)),
+        G("Reactive power",
+          X("Depth-to-broad combo","4 × 3","2–3 min","Depth-drop → immediate broad jump. Absorb and reapply horizontally.",false,null,COMBO),
+          X("Single-leg broad jumps","3 × 3/leg","2 min","Sprint-specific reactive power.",false,null,SL_PROG)),
         G("Core", HANGLEG()),
         G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))}
    }},
-   thu:{tag:"Field / Optional",title:"Frisbee — or gym instead",focus:"Conditioning & fun — or a light gym day.",cns:"Mod",variant:{
+   thu:{tag:"Field / Optional",title:"Frisbee — or gym instead",focus:"Field conditioning & fun — or a functional field-prep gym day.",cns:"Mod",variant:{
      aLabel:"Frisbee mini",bLabel:"In the gym instead",def:"a",fieldStyle:true,
      a:{full:"play",note:"Warm hamstrings first, then play.",warm:"field",ex:[].concat(G("Play",X("Warm up, then play","—","—","Warm-up above first.")))},
-     b:{full:"40 min",short:"25 min",note:"Low-CNS. (Skipped Wed too? See the skip guide.)",warm:"lift",ex:[].concat(
-        G("Conditioning",X("Bike or row intervals","8 × 40s easy","60s","",false,"6 × 40s")),
-        G("Accessory (aesthetic)",
+     b:{full:"45–55 min",short:"30 min",note:"Trains the field qualities sprinting doesn't: cutting, deceleration, lateral power, landing, rotation. Low-CNS.",warm:"lift",ex:[].concat(
+        G("Quick feet (foot speed)",
+          X("Plate quick-step taps","3 × 20s","45s","Rapid alternating foot taps onto a low plate/step, balls of the feet, arms driving — rhythm, foot speed, ankle stiffness. No ladder needed."),
+          X("Line hops (lateral + fwd/back)","3 × 20s","45s","Fast reactive two-foot hops over a floor line or tape; progress to single-leg. Reactive quick feet + ankle stiffness."),
+          X("Pogo hops","2 × 20","45s","Stiff-ankle bounces — the real driver of quick feet is reactive ankle stiffness, not fancy patterns.")),
+        G("Field movement & landing",
+          X("Skater bounds (lateral)","3 × 6/side","60s","Bound side to side, land single-leg and stick 1s. Lateral power + deceleration — the cut."),
+          X("Broad jump to stick landing","3 × 3","75s","Jump out, land soft and HOLD 2s. Deceleration & landing control."),
+          X("Lateral lunge","3 × 8/side","60s","Frontal-plane strength + hip mobility.")),
+        G("Rotational power",
+          X("Med-ball rotational throw","3 × 6/side","45s","Explosive into a wall — trunk torque of throwing and cutting."),
+          X("Landmine rotation (explosive)","3 × 6/side","45s","Alternative to the throw — turn from the hips, pivot the back foot, keep the spine stable. Loaded rotational power.",true)),
+        G("Conditioning",
+          X("Bike or row intervals","6 × 40s easy","60s","Aerobic, recovery-promoting.",true)),
+        G("Core · anti-rotation",
+          X("Pallof press","3 × 10/side","45s","Resist the twist.")),
+        G("Accessory (optional aesthetic)",
           X("Lateral raises","3 × 15","45s","",true),
-          X("Incline DB curl","3 × 12","45s","",true),
-          X("Face pulls","3 × 15","45s","",true)),
-        G("Core · anti-extension",
-          X("Ab-wheel rollout","3 × 8","45s",""),
-          X("Copenhagen plank","3 × 20s/side","45s","")))}
+          X("Incline DB curl","3 × 12","45s","",true)),
+        G("Mobility",
+          X("Ankle rocks","10/side","—","Wall dorsiflexion."),
+          X("Kneeling hip-flexor stretch","30s/side","—",""),
+          X("World's-greatest-stretch","5/side","—",""),
+          X("90/90 hip rotations","10/side","—",""),
+          X("Open-book T-spine","8/side","—","",true)))}
    }},
-   fri:{tag:"Gym C",title:"Full Upper · maintain",focus:"Athletic + aesthetic maintenance: explosive pull first, then hold size (mains 3–4×5).",full:"55–65 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
+   fri:{tag:"Gym C",title:"Full Upper · pull-lean",focus:"Whole upper, leaning pull — maintenance (mains 3–4×5).",full:"50–55 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
      G("Power (explosive)",
        X("Med-ball overhead slam","3 × 6","60s","Reach tall, slam down hard.")),
      G("Pull",
-       X("Weighted pull-ups","3–4 × 5","2.5 min",""),
-       X("Row","4 × 6","2 min","")),
+       X("Weighted pull-ups","3–4 × 5","2.5 min","Vertical pull."),
+       X("Row","4 × 6","2 min","Horizontal pull.")),
      G("Push",
-       X("Incline DB press","3 × 10","90s","")),
+       X("Incline DB press","4 × 8","2 min","Horizontal push.")),
      G("Arms & rear delts",
        X("Face pulls","3 × 15","60s","",true),
-       X("Incline DB curl","3 × 10","60s","",true)),
+       X("Hammer curl","3 × 10","60s","",true)),
      G("Achilles · HSR", CALF_PRESS()),
      G("Core · anti-extension",
        X("Ab-wheel rollout","3 × 8","45s",""),
-       X("Copenhagen plank","3 × 20–30s/side","45s",""))
+       X("Copenhagen crunch","3 × 8–10/side","45s","Dynamic adductor raise/lower — full-range groin strength. Knee-bent to start; plank instead on a cranky day."))
    )},
-   sat:{tag:"Gym D · Optional",title:"Explosive — or Contrast",focus:"Springy low-volume maintenance, or a fuller contrast day. Keep volume down — you're peaking.",cns:"Mod",variant:{
-     aLabel:"Light (reactive)",bLabel:"Contrast (heavier)",def:"a",
-     a:{full:"45 min",short:"30 min",note:"Peaking block — stay springy, don't accumulate fatigue that dulls your speed days.",warm:"sprint",ex:[].concat(
-        G("Power · contrast (single pair)",
-          X("Bulgarian split squat","3 × 3 @ ~80%","30s–2min → jump","Then straight to the split-squat jumps.",false,null,CONTRAST),
-          X("Split-squat jumps","3 × 5/leg","2–3 min","Potentiated by the split squat.")),
-        G("Plyometrics",
-          X("Depth jumps","3 × 3","2–3 min","Reactive quality."),
-          X("Single-leg pogo hops","3 × 6/leg","90s","")),
-        G("Strength",
-          X("Romanian deadlift","2 × 6","2 min","",true)),
+   sat:{tag:"Gym D",title:"Plyometrics — peaking",focus:"Springy, low-volume, high-quality. Reactive power without accumulating fatigue that dulls your speed days.",full:"55–65 min",short:"40 min",cns:"Mod",warm:"sprint",ex:[].concat(
+        G("Plyometrics · reactive (main)",
+          X("Depth jumps","3 × 3","2–3 min","Reactive quality. By now you can trial a higher box (24\"+) if contact stays fast.",false,null,DJ_DET),
+          X("Depth-to-broad combo","3 × 4","2–3 min","Depth-drop → immediate broad jump. You know your tendon handles it — max intent.",false,null,COMBO)),
+        G("Plyometrics · single-leg (most sprint-specific)",
+          X("Cycled split-squat jumps","3 × 5/leg","2 min","Explosive split-stance jump, switch legs mid-air — the reciprocal sprint stride."),
+          X("Single-leg broad jumps","3 × 3/leg","2 min","Max-intent sprint-specific reactive power.",false,null,SL_PROG)),
+        G("Advanced · optional (green-light only)",
+          X("Continuous bounds","3 × 30m (or in place)","2–3 min","Long, repeated single-leg bounding — highest reactive strain. Advance gradually.",true,null,ADV_PLYO)),
+        G("Strength accessory",
+          X("Nordic hamstring curl","2 × 5","2 min","Eccentric hamstring insurance. After the jumps."),
+          X("Single-leg RDL","2 × 8/leg","90s","Hip-extensor hamstring + glute + balance. Optional.",true)),
         G("Hip flexors",
           X("Explosive banded knee drive","2 × 8/leg","60s","")),
-        G("Conditioning",
-          X("Short tempo","bike/rower 6 × 30s","60s","",true)),
-        G("Achilles · HSR (light)",
-          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))},
-     b:{full:"60 min",short:"45 min",note:"More strength via contrast, still peaking-appropriate. Heavy lift first, short rest, matched jump. Don't let it bleed into Monday's freshness.",warm:"sprint",ex:[].concat(
-        G("Contrast pair 1 · squat → depth jump",
-          X("Back squat","3 × 3 @ ~85%","30s–2min → jump","Heavy, explosive.",false,null,CONTRAST),
-          X("Depth jumps","3 × 3","2–3 min before next pair","Reactive, potentiated.")),
-        G("Contrast pair 2 · split squat → split jump",
-          X("Bulgarian split squat","3 × 4/leg","30s–2min → jump","Loaded."),
-          X("Split-squat jumps","3 × 5/leg","2 min","Land soft.")),
-        G("Contrast pair 3 · RDL → broad jump",
-          X("Romanian deadlift","2 × 5","30s–2min → jump","Explosive hip drive."),
-          X("Broad jumps","3 × 3","2 min","Horizontal power.")),
-        G("Plyometrics",
-          X("Single-leg pogo hops","3 × 6/leg","90s","Finisher.")),
-        G("Hip flexors",
-          X("Explosive banded knee drive","2 × 8/leg","60s","")),
-        G("Achilles · HSR (light)",
-          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))}
-   }},
+        G("Achilles · HSR (heavy)",
+          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — keeps raising your plyo/sprint ceiling.",false,null,ISO_DET)))
+   },
    sun:{rest:true,note:"Full recovery, especially in a peaking block — freshness is what expresses your speed."}
  }},
 
  mt:{name:"Maintenance · Month 7 onward",days:{
-   mon:{tag:"Lower",title:"Strength + Accel + Plyo primer",focus:"Hold strength, accel and knee-drive with far less volume.",full:"55–65 min",short:"40 min",cns:"High",warm:"sprint",ex:[].concat(
-     G("Plyometrics",
-       X("Pogo hops","2 × 20","60s","Keeps the reactive pattern frequent."),
-       X("Box jumps","3 × 4","90s","Step down.")),
-     G("Acceleration",
-       X("Banded / incline accel","5 × 20m","2 min","Full effort.")),
+   mon:{tag:"Lower",title:"Strength + Accel",focus:"Hold strength, acceleration and knee-drive with less volume.",full:"70–75 min",short:"50 min",cns:"High",warm:"sprint",ex:[].concat(
+     G("Acceleration (stairs)",
+       X("Stair sprints","5 × 8–12 steps","full 2 min","Explosive up, 2 at a time."),
+       X("Sprinter step-up jumps","2 × 4/leg","2 min","Single-leg drive-phase power off a box.",false,null,STEPUP)),
      G("Strength",
        X("Back squat","4 × 4","3 min","Hold your relative strength."),
-       X("Bulgarian split squat","3 × 6/leg","2 min","",false,"2 × 6/leg"),
+       X("Romanian deadlift","3 × 8","2 min","Posterior chain + hamstring insurance."),
+       X("Bulgarian split squat","3 × 6/leg","2 min","Optional single-leg work.",true),
        X("Barbell hip thrust","3 × 8","2 min","",true)),
      G("Hip flexors",
-       X("Banded standing hip flexion","3 × 12/leg","60s","Drive knee up, 1s hold.")),
+       X("Leaning cable knee drive","3 × 10/leg","60s","Leaned forward, leg trailing, drive the knee through fast.",false,null,HF_LEAN)),
      G("Achilles · HSR", CALF_STAND(), CALF_SEAT()),
      G("Core · anti-rotation",
        X("Pallof press","2 × 10/side","45s",""))
    )},
-   tue:{tag:"Upper",title:"Full Upper · push-lean + Nordic",focus:"Athletic + aesthetic: explosive power first, then whole upper (each muscle 2×/week across Tue + Fri).",full:"50–60 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
+   tue:{tag:"Upper",title:"Full Upper · push-lean",focus:"Whole upper, leaning push — each muscle hit across Tue + Fri.",full:"45 min",short:"35 min",cns:"Low",warm:"lift",ex:[].concat(
      G("Power (explosive)",
        X("Med-ball chest pass","3 × 5","60s","Fire it hard into a wall.")),
      G("Push",
-       X("Push press","3 × 6","2 min","Explosive leg-drive → overhead."),
-       X("Bench press","4 × 6","2.5 min",""),
-       X("Incline DB press","3 × 10","90s","")),
+       X("Bench press","4 × 6","2.5 min","Horizontal push."),
+       X("Push press","3 × 6","2 min","Vertical push.")),
      G("Pull",
-       X("Chest-supported row","3 × 10","90s","")),
-     G("Shoulders",
+       X("Chest-supported row","3 × 8","2 min","Horizontal pull.")),
+     G("Arms & shoulders",
+       X("Overhead triceps extension","3 × 12","60s","Triceps.",true),
        X("Lateral raises","3 × 15","60s","",true)),
-     G("Hamstrings",
-       X("Nordic hamstring curl","2 × 6","2 min","Cheap hamstring insurance.")),
      G("Core · anti-rotation",
        X("Pallof press or chop","3 × 10/side","45s",""))
    )},
-   wed:{tag:"Speed Day",title:"Speed — keep top-end alive",focus:"One real speed day a week is the minimum to hold your speed.",full:"45 min",cns:"High",warm:"sprint",ex:[].concat(
+   wed:{tag:"Speed Day",title:"Speed — keep top-end alive",focus:"One real speed day a week is the minimum to hold your speed. Track if you can, stairs if indoors.",full:"55–60 min",cns:"High",warm:"sprint",ex:[].concat(
+     G("Prime the tendon (before you sprint)",
+       X("Overcoming calf isometric","3 × 5s","30s","Hard holds before sprinting — dampens tendon pain and primes it.",false,null,ISO_DET)),
      G("Speed",
-       X("Flying 20s","4 × (20m build → 20m @ 100%)","full 3–5 min","Or full 40yd / 100m efforts. Cap ≤ 300m.")),
-     G("Core", HANGLEG()),
+       X("Track flying sprints, or stair sprints","4–6 efforts","full 3–5 min","At the track: flying 20s / full 40yd efforts (cap ≤ 300m). Indoors: stair sprints 6 × 8–12 steps.")),
+     G("Reactive power",
+       X("Depth-to-broad combo","3 × 3","2–3 min","Depth-drop → immediate broad jump.",false,null,COMBO)),
      G("Achilles · HSR", CALF_STAND(), CALF_SEAT()))
    },
    thu:{rest:true,note:"Optional rest, frisbee, or a light bike / mobility day — your call. Maintenance is flexible."},
-   fri:{tag:"Upper",title:"Full Upper · pull-lean + Core",focus:"Athletic + aesthetic: explosive pull first, then whole-upper pull-leaning day.",full:"50–60 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
+   fri:{tag:"Upper",title:"Full Upper · pull-lean",focus:"Whole upper, leaning pull, plus core.",full:"50 min",short:"40 min",cns:"Low",warm:"lift",ex:[].concat(
      G("Power (explosive)",
        X("Med-ball overhead slam","3 × 6","60s","Reach tall, slam down hard.")),
      G("Pull",
-       X("Weighted pull-ups","4 × 6","2.5 min",""),
-       X("Row","4 × 8","2 min","")),
+       X("Weighted pull-ups","4 × 6","2.5 min","Vertical pull."),
+       X("Row","4 × 8","2 min","Horizontal pull.")),
      G("Push",
-       X("Incline DB press","3 × 10","90s","")),
+       X("Incline DB press","4 × 8","2 min","Horizontal push.")),
      G("Arms & rear delts",
        X("Face pulls","3 × 15","60s","",true),
-       X("Incline DB curl","3 × 10","60s","",true)),
+       X("Hammer curl","3 × 10","60s","",true)),
      G("Achilles · HSR", CALF_PRESS()),
      G("Core · anti-extension",
        X("Ab-wheel rollout","3 × 8","45s","")))
    },
-   sat:{tag:"Optional",title:"Plyo — or Contrast",focus:"Keep the springs — light, or a fuller contrast day. Optional either way.",cns:"Mod",variant:{
-     aLabel:"Pure plyo (light)",bLabel:"Contrast (heavier)",def:"a",
-     a:{full:"40 min",short:"30 min",note:"Enough to hold your reactive qualities with minimal cost.",warm:"sprint",ex:[].concat(
-        G("Plyometrics",
-          X("Depth / box jumps","3 × 4","2 min","Step-down landings."),
-          X("Single-leg pogo hops","3 × 6/leg","90s",""),
-          X("Broad jumps","3 × 3","2 min","")),
-        G("Strength",
-          X("Romanian deadlift","3 × 8","2 min","",true)),
+   sat:{tag:"Plyometrics",title:"Plyometrics",focus:"Hold your reactive/elastic qualities.",full:"50–55 min",short:"35 min",cns:"Mod",warm:"sprint",ex:[].concat(
+        G("Plyometrics · reactive",
+          X("Depth jumps","3 × 4","2 min","Fast bounce-off, minimal contact.",false,null,DJ_DET),
+          X("Broad jumps","3 × 3","2 min","Bilateral horizontal power.")),
+        G("Plyometrics · single-leg",
+          X("Cycled split-squat jumps","3 × 5/leg","2 min","Explosive split-stance jump, switch legs mid-air — the reciprocal sprint stride."),
+          X("Single-leg broad jumps","3 × 3/leg","2 min","Sprint-specific reactive power — pain rule applies.",false,null,SL_PROG)),
+        G("Advanced · optional (green-light only)",
+          X("Depth-to-broad combo","3 × 4","2–3 min","Depth-drop → immediate broad jump. Keep if your tendon tolerates it.",true,null,COMBO)),
+        G("Strength accessory",
+          X("Nordic hamstring curl","2 × 6","2 min","Eccentric hamstring insurance.",true),
+          X("Single-leg RDL","2 × 8/leg","90s","Hip-extensor hamstring + glute + balance. Optional.",true)),
         G("Hip flexors",
           X("Explosive banded knee drive","2 × 8/leg","60s","")),
-        G("Conditioning",
-          X("Easy tempo","bike 6 × 40s","90s","",true)),
-        G("Achilles · HSR (light)",
-          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))},
-     b:{full:"55 min",short:"40 min",note:"A second strength dose via contrast. Heavy lift first, short rest, matched jump.",warm:"sprint",ex:[].concat(
-        G("Contrast pair 1 · squat → box jump",
-          X("Back squat","3 × 3 @ ~80%","30s–2min → jump","Heavy, explosive.",false,null,CONTRAST),
-          X("Box jumps","3 × 4","2–3 min before next pair","Step down. Potentiated.")),
-        G("Contrast pair 2 · RDL → broad jump",
-          X("Romanian deadlift","3 × 6","30s–2min → jump","Explosive hip drive."),
-          X("Broad jumps","3 × 3","2 min","Horizontal power.")),
-        G("Plyometrics",
-          X("Single-leg pogo hops","3 × 6/leg","90s","Finisher.")),
-        G("Hip flexors",
-          X("Explosive banded knee drive","2 × 8/leg","60s","")),
-        G("Achilles · HSR (light)",
-          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Drive maximally into an immovable resistance — hard, fast intent. Zero-impact; builds tendon stiffness + fast force.",false,null,ISO_DET)))}
-   }},
+        G("Achilles · HSR (heavy)",
+          X("Overcoming calf isometric","5 × 4 · 3–5s","90s","Keeps your tendon capacity high long-term.",false,null,ISO_DET)))
+   },
    sun:{rest:true,note:"Rest."}
  }}
 };
@@ -747,40 +713,30 @@ document.getElementById('shortBtn').addEventListener('click',()=>{
 });
 
 const scrim=document.getElementById('scrim'),drawer=document.getElementById('drawer'),drawerIn=document.getElementById('drawerIn');
-function openDrawer(which){drawerIn.innerHTML=`<button class="close" onclick="closeDrawer()" aria-label="Close">✕</button><div class="grab"></div>`+(which==='skip'?SKIP_HTML:REF_HTML);scrim.classList.add('open');drawer.classList.add('open');drawer.scrollTop=0;}
+function openDrawer(which){drawerIn.innerHTML=`<button class="close" onclick="closeDrawer()" aria-label="Close">✕</button><div class="grab"></div>`+REF_HTML;scrim.classList.add('open');drawer.classList.add('open');drawer.scrollTop=0;}
 function closeDrawer(){scrim.classList.remove('open');drawer.classList.remove('open');}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
-
-const SKIP_HTML=`
-  <h2>If I skip track or frisbee</h2>
-  <p>You'll go to at least one of <b>Wed track</b> or <b>Thu frisbee</b>. Here's how to fill the gaps so you never lose the thing that matters most — a weekly max-velocity stimulus.</p>
-  <div class="skiprow"><div class="lab">Skip Wed<br>track</div><div class="txt">Open the Wednesday card and switch to <b>“In the gym instead.”</b> That's your self-run speed day. Never delete your only top-speed session.</div></div>
-  <div class="skiprow"><div class="lab">Skip Thu<br>frisbee</div><div class="txt">Switch the Thursday card to <b>“In the gym instead”</b> — light non-impact conditioning + accessory + core. Keep it low-CNS because Wednesday was your hard day.</div></div>
-  <div class="skiprow"><div class="lab">Skip both</div><div class="txt">Make <b>one</b> of the two your speed day (gym speed session) and the other the light conditioning/accessory day. Do the speed day first, when you're freshest.</div></div>
-  <div class="skiprow"><div class="lab">Only 4<br>gym days</div><div class="txt">Priority: <b>Mon (never skip) → a speed day → one Upper → Sat plyos.</b> Still trains all five qualities: accelerate, hit top speed, lift heavy, drive the knee, stay springy & resilient.</div></div>
-  <div class="kv"><span class="h">The rule underneath all of it</span><b>48–72h between true max-effort days.</b> Speed work and heavy lifting are both high-CNS. However you rearrange, don't stack two hard days back-to-back — put a low or rest day between them.</div>`;
 
 const REF_HTML=`
   <h2>Reference</h2>
   <h3>Priority hierarchy</h3>
-  <p>Most → least impact on your times: <b>1) sprinting</b> (accel + max-velocity) → <b>2) heavy strength</b> → <b>3) plyometrics</b> → <b>4) support work</b> (hip flexors, core, contrast). Protect the top when time is short.</p>
-  <h3>Plyometrics — dosing</h3>
-  <p><b>~2×/week on both a Mon primer and the Sat session</b> (not just one day). Start ~40–60 quality ground contacts, progress ~10%/week toward 80+. Bilateral & soft first → single-leg & reactive later. Both vertical and horizontal matter. Since Saturday is optional, keep it rather than cut it if you want the full second dose.</p>
-  <h3>Achilles — HSR protocol</h3>
+  <p>Most → least impact on your times: <b>1) sprinting</b> (accel + max-velocity) → <b>2) heavy strength</b> → <b>3) plyometrics</b> → <b>4) support</b> (hip flexors, core). Protect the top when time is short.</p>
+  <h3>Plyometrics</h3>
+  <p><b>Sets/reps:</b> max-intent jumps (depth, broad, single-leg broad, split-squat jumps, bounds) = 3–5 reps × 3–5 sets; low-intensity (pogos) up to ~20. <b>Rest:</b> 2–3 min between max-intent sets — full recovery keeps them fast and clean; 30–60s for low-intensity hops. <b>Load:</b> bodyweight — added weight gives no extra sprint benefit. <b>Selection:</b> bias horizontal and single-leg (broad jumps, single-leg broad jumps, split-squat jumps, bounds) plus depth jumps for reactivity — those transfer most to sprinting.</p>
+  <p><b>Depth jumps:</b> box 12–24\" (start ~12–18\"), drop at a slight forward angle, minimise ground-contact time (bounce off fast — contact time is the point, not height).</p>
+  <h3>Acceleration — stairs & how-to</h3>
+  <p>Acceleration is about applying big <b>horizontal</b> force into the ground with a strong forward lean, knee drive, and full leg extension. Stairs train this well and are lower-impact than flat sprinting: drive up explosively (2 steps at a time), walk down to recover, full rest between reps (~2–3 min). Keep a straight line from head to drive-leg — lean from the ankles, don't pike at the waist; push the ground back and away. Stair bounds = one big single-leg push per step for horizontal power.</p>
+  <h3>Achilles — pain-monitoring rule</h3>
+  <div class="kv">Loading the tendon through some pain is safe and effective (level-1 evidence), as long as pain stays <b>≤5/10 during</b> the activity, <b>doesn't increase</b> across the session, and is <b>back to baseline by next morning</b>. If it breaks those limits, cut volume (don't eliminate) and rebuild. This is why single-leg broad jumps and stairs stay in — build the tendon's ceiling with the heavy isometrics.</div>
+  <h3>Calf / achilles — HSR</h3>
   <div class="kv">${HSR}</div>
-  <div class="kv"><span class="h">Isometrics — overcoming vs yielding</span>Your Saturday finisher uses <b>overcoming</b> isometrics: press maximally into an immovable resistance (pins, fixed strap, a loaded machine you can't move). They build tendon stiffness and fast force with zero impact, and you set the intensity by how hard you push — kind to an irritated tendon. On a cranky-tendon day, swap to <b>yielding</b> holds instead (hold a heavy load in place, 3 × 30–45s) — better for calming pain. Both obey the ≤3/10 rule.</div>
-  <h3>Accel options (no hill / no sled)</h3>
-  <p>Anywhere it says “accel,” pick what you have, best-first: <b>banded sprints</b> → <b>incline-treadmill sprints</b> (8–15%, achilles-friendly) → curved/manual treadmill push → stairs → <b>flat accel sprints</b> (fine on their own).</p>
-  <h3>Contrast training (optional)</h3>
-  <div class="kv">${CONTRAST}<br><br>Useful but not a priority — sprinting, strength and plyos are the real drivers.</div>
-  <h3>Core menu</h3>
-  <p><b>Anti-rotation:</b> Pallof press, cable chop, suitcase carry, bird dog. <b>Anti-extension:</b> ab-wheel, hollow hold, hanging leg raise, dead bug. <b>Anti-lateral-flexion:</b> Copenhagen plank, single-arm carry. <b>Rotational power:</b> med-ball throws. <b>Posterior:</b> back extension. One block per day; the trunk's job in sprinting is to resist motion so force transfers cleanly.</p>
-  <h3>Upper body — athletic role</h3>
-  <p>For sprinting the upper body is a <b>rhythm & balance system, not propulsion</b> — arm drive counters the trunk rotation your legs create and sets cadence (tighter, faster arms pull leg turnover up). So it won't move your 40 much. The athletic value is training the upper body to produce and transfer force <b>explosively through a braced trunk</b>: push press (ground-up transfer), med-ball throws (fast force through the trunk), and the anti-rotation core work. The hypertrophy work stays for the aesthetic goal — you get both.</p>
+  <div class="kv"><span class="h">Overcoming isometrics (speed-day primer & Saturday)</span>Press maximally into an immovable resistance (pins, fixed strap, a loaded machine you can't move) — builds tendon stiffness and fast force with zero impact, and you set intensity by how hard you push. Cranky-tendon day → swap to yielding holds (hold a heavy load in place, 3 × 30–45s).</div>
+  <h3>Core for sprinting</h3>
+  <p>The trunk's job is to <b>resist</b> motion so force transfers cleanly. Best bang for sprinting is <b>anti-rotation</b> (Pallof press, cable chop) — that's the lead core exercise. Support with anti-extension (ab-wheel, hanging leg raise), anti-lateral-flexion / adductor (Copenhagen plank → crunch, single-arm carry), and rotational power (med-ball throws).</p>
   <h3>Testing — every 8 weeks</h3>
   <p>Retest fresh & warm: <b>40yd, 100m, flying 10–20m, broad jump, single-leg broad jump (L vs R), back-squat 1RM/bodyweight.</b> Log achilles pain (0–10) + morning stiffness weekly.</p>
   <h3>Fueling</h3>
-  <p>Not dietary advice, but: as a lean hard-gainer, conditioning can quietly eat your surplus. Athletes commonly use a modest surplus on training days, protein ~1.6–2.2 g/kg (~100–135 g/day for you), enough carbs for speed sessions. Cut sessions before you cut calories.</p>`;
+  <p>Not dietary advice, but as a lean hard-gainer, conditioning can quietly eat your surplus: a modest surplus on training days, protein ~1.6–2.2 g/kg (~100–135 g/day), enough carbs for speed sessions. Cut sessions before you cut calories.</p>`;
 
 document.getElementById('blockSel').value=state.block;
 renderAll();
