@@ -164,7 +164,7 @@
     <option value="b1">Block 1 · Foundation</option>
     <option value="b2">Block 2 · Power + Max-V</option>
     <option value="b3">Block 3 · Peaking</option>
-    <option value="mt">Maintenance</option>
+    <option value="mt">Maintenance (situational)</option>
   </select>
   <button class="shortbtn" id="shortBtn" aria-pressed="false"><span class="dot"></span><span id="shortLbl">Short on time</span></button>
 </div></div>
@@ -215,7 +215,7 @@ function G(sec,...items){return items.map(o=>Object.assign({sec},o));}
 /* reusable items */
 const CALF_STAND = ()=>X("Standing calf raise (single-leg)","3 × 6 · 3s up / 3s down","90s","One leg at a time, knee straight (gastrocnemius). Full range off a step. Heavy — 6-rep max. Superset with the seated raise to save time.",false,null,HSR);
 const CALF_SEAT  = ()=>X("Seated calf raise (single-leg)","3 × 8 · 3s up / 3s down","90s","One leg at a time, knee bent (soleus). Full range, heavy.");
-const CALF_PRESS = ()=>X("Leg-press calf raise (single-leg)","3 × 8 · 3s up / 3s down","90s","One leg at a time, feet low on the platform. Heavy, full range.",false,null,HSR);
+const CALF_PRESS = ()=>X("Leg-press calf raise (single-leg)","3 × 6 · 3s up / 3s down","90s","One leg at a time, feet low on the platform. Heavy, full range.",false,null,HSR);
 const HANGLEG    = (s)=>X("Hanging leg raise",s||"3 × 12","45s","Also trains the hip flexors. Resist the swing.");
 
 /* ---------- PROGRAM ---------- */
@@ -271,7 +271,7 @@ const P = {
      aLabel:"Frisbee mini",bLabel:"In the gym instead",def:"a",fieldStyle:true,
      a:{full:"play",note:"Play. Warm the hamstrings first — cutting cold is the #1 hamstring tweak. This is your multidirectional conditioning.",warm:"field",ex:[].concat(
         G("Play",X("Warm up, then play","—","—","Do the warm-up above, then enjoy it. Great low-cost conditioning.")))},
-     b:{full:"45–55 min",short:"30 min",note:"Trains the field qualities sprinting doesn't: cutting, deceleration, lateral power, landing, rotation. Low-CNS after yesterday's speed work.",warm:"lift",ex:[].concat(
+     b:{full:"45–55 min",short:"30 min",note:"Trains the field qualities sprinting doesn't: cutting, deceleration, lateral power, landing, rotation. Low-CNS after yesterday's speed work.",warm:"sprint",ex:[].concat(
         G("Quick feet (foot speed)",
           X("RFE quick taps","3 × 10s/leg","45s","Back foot elevated on a bench, front foot taps as fast as possible — max unilateral turnover, hip-flexor cycling, balance. Ball of the foot, arms driving."),
           X("Line hops (lateral + fwd/back)","3 × 20s","45s","Fast reactive two-foot hops over a floor line or tape; progress to single-leg. Reactive quick feet + ankle stiffness."),
@@ -390,7 +390,7 @@ const P = {
    thu:{tag:"Field / Optional",title:"Frisbee — or gym instead",focus:"Field conditioning & fun — or a functional field-prep gym day.",cns:"Mod",variant:{
      aLabel:"Frisbee mini",bLabel:"In the gym instead",def:"a",fieldStyle:true,
      a:{full:"play",note:"Warm hamstrings first. Fun + conditioning.",warm:"field",ex:[].concat(G("Play",X("Warm up, then play","—","—","Warm-up above, then go.")))},
-     b:{full:"45–55 min",short:"30 min",note:"Trains the field qualities sprinting doesn't: cutting, deceleration, lateral power, landing, rotation. Low-CNS after your speed day.",warm:"lift",ex:[].concat(
+     b:{full:"45–55 min",short:"30 min",note:"Trains the field qualities sprinting doesn't: cutting, deceleration, lateral power, landing, rotation. Low-CNS after your speed day.",warm:"sprint",ex:[].concat(
         G("Quick feet (foot speed)",
           X("RFE quick taps","3 × 10s/leg","45s","Back foot elevated on a bench, front foot taps as fast as possible — max unilateral turnover, hip-flexor cycling, balance. Ball of the foot, arms driving."),
           X("Line hops (lateral + fwd/back)","3 × 20s","45s","Fast reactive two-foot hops over a floor line or tape; progress to single-leg. Reactive quick feet + ankle stiffness."),
@@ -505,7 +505,7 @@ const P = {
    thu:{tag:"Field / Optional",title:"Frisbee — or gym instead",focus:"Field conditioning & fun — or a functional field-prep gym day.",cns:"Mod",variant:{
      aLabel:"Frisbee mini",bLabel:"In the gym instead",def:"a",fieldStyle:true,
      a:{full:"play",note:"Warm hamstrings first, then play.",warm:"field",ex:[].concat(G("Play",X("Warm up, then play","—","—","Warm-up above first.")))},
-     b:{full:"45–55 min",short:"30 min",note:"Trains the field qualities sprinting doesn't: cutting, deceleration, lateral power, landing, rotation. Low-CNS.",warm:"lift",ex:[].concat(
+     b:{full:"45–55 min",short:"30 min",note:"Trains the field qualities sprinting doesn't: cutting, deceleration, lateral power, landing, rotation. Low-CNS.",warm:"sprint",ex:[].concat(
         G("Quick feet (foot speed)",
           X("RFE quick taps","3 × 10s/leg","45s","Back foot elevated on a bench, front foot taps as fast as possible — max unilateral turnover, hip-flexor cycling, balance. Ball of the foot, arms driving."),
           X("Line hops (lateral + fwd/back)","3 × 20s","45s","Fast reactive two-foot hops over a floor line or tape; progress to single-leg. Reactive quick feet + ankle stiffness."),
@@ -567,7 +567,7 @@ const P = {
    sun:{rest:true,note:"Full recovery, especially in a peaking block — freshness is what expresses your speed."}
  }},
 
- mt:{name:"Maintenance · Month 7 onward",days:{
+ mt:{name:"Maintenance · in-season, busy periods, or planned breaks",days:{
    mon:{tag:"Lower",title:"Strength + Accel",focus:"Hold strength, acceleration and knee-drive with less volume.",full:"70–75 min",short:"50 min",cns:"High",warm:"sprint",ex:[].concat(
      G("Acceleration (stairs)",
        X("Stair sprints","5 × 8–12 steps","full 2 min","Explosive up, 2 at a time."),
@@ -721,6 +721,8 @@ const REF_HTML=`
   <h2>Reference</h2>
   <h3>Priority hierarchy</h3>
   <p>Most → least impact on your times: <b>1) sprinting</b> (accel + max-velocity) → <b>2) heavy strength</b> → <b>3) plyometrics</b> → <b>4) support</b> (hip flexors, core). Protect the top when time is short.</p>
+  <h3>After Block 3 — repeat the cycle</h3>
+  <p>To keep getting faster, don't park in Maintenance — <b>cycle back through the blocks: B1 → B2 → B3 → test → one easy deload week → repeat.</b> Each pass starts from a higher floor (stronger squat, tougher tendon, better jumps), and the second pass through Block 1 can be shorter (4–6 weeks) since the base already exists. Use <b>Maintenance</b> only when it fits the situation: in-season (frisbee/games eating recovery), busy life periods, a plateau you're happy to hold cheaply, or a planned mental break after a couple of full cycles.</p>
   <h3>Plyometrics</h3>
   <p><b>Sets/reps:</b> max-intent jumps (depth, broad, single-leg broad, split-squat jumps, bounds) = 3–5 reps × 3–5 sets; low-intensity (pogos) up to ~20. <b>Rest:</b> 2–3 min between max-intent sets — full recovery keeps them fast and clean; 30–60s for low-intensity hops. <b>Load:</b> bodyweight — added weight gives no extra sprint benefit. <b>Selection:</b> bias horizontal and single-leg (broad jumps, single-leg broad jumps, split-squat jumps, bounds) plus depth jumps for reactivity — those transfer most to sprinting.</p>
   <p><b>Depth jumps:</b> box 12–24\" (start ~12–18\"), drop at a slight forward angle, minimise ground-contact time (bounce off fast — contact time is the point, not height).</p>
@@ -734,7 +736,7 @@ const REF_HTML=`
   <h3>Core for sprinting</h3>
   <p>The trunk's job is to <b>resist</b> motion so force transfers cleanly. Best bang for sprinting is <b>anti-rotation</b> (Pallof press, cable chop) — that's the lead core exercise. Support with anti-extension (ab-wheel, hanging leg raise), anti-lateral-flexion / adductor (Copenhagen plank → crunch, single-arm carry), and rotational power (med-ball throws).</p>
   <h3>Testing — every 8 weeks</h3>
-  <p>Retest fresh & warm: <b>40yd, 100m, flying 10–20m, broad jump, single-leg broad jump (L vs R), back-squat 1RM/bodyweight.</b> Log achilles pain (0–10) + morning stiffness weekly.</p>
+  <p>Retest fresh & warm: <b>40yd, 100m, flying 10–20m, broad jump, single-leg broad jump (L vs R), back-squat 1RM/bodyweight.</b> Log achilles pain (0–10) + morning stiffness weekly. After the end-of-Block-3 test, take <b>one easy deload week</b> (light movement, no max efforts) before restarting the cycle.</p>
   <h3>Fueling</h3>
   <p>Not dietary advice, but as a lean hard-gainer, conditioning can quietly eat your surplus: a modest surplus on training days, protein ~1.6–2.2 g/kg (~100–135 g/day), enough carbs for speed sessions. Cut sessions before you cut calories.</p>`;
 
